@@ -7,18 +7,20 @@
 }
 
 body {
-    background-color: #ebebeb; /* Fondo gris claro típico de e-commerce */
-    color: #333;
+    background: linear-gradient(135deg, #ebebeb, #dfe6ff);
 }
 
 /* --- Cabecera --- */
 .header {
-    background-color: #ffe600; /* Amarillo característico */
+    background-color: #ffe600;
     padding: 15px 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .logo {
@@ -34,19 +36,23 @@ body {
 
 .search-bar input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: none;
-    border-radius: 4px 0 0 4px;
+    border-radius: 8px 0 0 8px;
     outline: none;
 }
 
 .search-bar button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #fff;
+    padding: 12px 20px;
+    background: #fff;
     border-left: 1px solid #ccc;
     cursor: pointer;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 8px 8px 0;
+    transition: background 0.2s;
+}
+
+.search-bar button:hover {
+    background: #f5f5f5;
 }
 
 /* --- Layout Principal --- */
@@ -94,15 +100,15 @@ body {
 /* --- Tarjetas de Producto --- */
 .product-card {
     background: #fff;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    transition: transform 0.2s, box-shadow 0.2s; /* Animación suave */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .product-card:hover {
-    transform: translateY(-5px); /* Se levanta al pasar el mouse */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
 
 .product-image {
@@ -120,10 +126,11 @@ body {
 }
 
 .category-tag {
-    font-size: 12px;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
 }
 
 .product-title {
@@ -152,4 +159,69 @@ body {
 
 .btn-details:hover {
     background-color: #2968c8;
+}
+/* --- LOGIN --- */
+.login-container {
+    width: 350px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #2d3277;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.login-container input:focus {
+    border-color: #3483fa;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.1s, background 0.2s;
+}
+
+.login-container button:hover {
+    transform: scale(1.03);
+}
+
+/* Botón login */
+.login-container button:first-of-type {
+    background: #3483fa;
+    color: #fff;
+}
+
+.login-container button:first-of-type:hover {
+    background: #2968c8;
+}
+
+/* Botón registro */
+.login-container button:last-of-type {
+    background: #e0e0e0;
+}
+
+#mensaje {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
 }
