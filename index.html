@@ -1,12 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>TechMarket - Tu Tienda TI</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Mushasho</h1>
-    
+    <header class="header">
+        <div class="logo">TechMarket</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar componentes, licencias y más...">
+            <button>Buscar</button>
+        </div>
+        <div class="cart">🛒 Carrito (0)</div>
+    </header>
+
+    <div class="main-container">
+        
+        <aside class="sidebar">
+            <h3>Categorías</h3>
+            <ul class="filter-list">
+                <li><label><input type="radio" name="categoria" value="todos" checked> Todos</label></li>
+                <li><label><input type="radio" name="categoria" value="hardware"> Hardware</label></li>
+                <li><label><input type="radio" name="categoria" value="electronica"> Electrónica</label></li>
+                <li><label><input type="radio" name="categoria" value="servicios"> Servicios</label></li>
+            </ul>
+        </aside>
+
+        <main class="product-grid" id="catalogo">
+            
+            <div class="product-card" data-categoria="hardware">
+                <div class="product-image">💻</div>
+                <div class="product-info">
+                    <span class="category-tag">Hardware</span>
+                    <h4 class="product-title">Tarjeta de Video RTX 4060</h4>
+                    <p class="product-price">$6,500.00</p>
+                    <button class="btn-details">Ver detalles</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-categoria="electronica">
+                <div class="product-image">🔌</div>
+                <div class="product-info">
+                    <span class="category-tag">Electrónica</span>
+                    <h4 class="product-title">Kit Arduino Master</h4>
+                    <p class="product-price">$1,200.00</p>
+                    <button class="btn-details">Ver detalles</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-categoria="servicios">
+                <div class="product-image">🛡️</div>
+                <div class="product-info">
+                    <span class="category-tag">Servicios TI</span>
+                    <h4 class="product-title">Auditoría de Seguridad Web</h4>
+                    <p class="product-price">$3,000.00</p>
+                    <button class="btn-details">Ver detalles</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
 </body>
 </html>
