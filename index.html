@@ -28,7 +28,6 @@
         </div>
         <div class="cart">🛒 Carrito (0)</div>
     </header>
-    <button id="btn-subir-datos" onclick="subirProductosIniciales()" style="padding:15px; background:red; color:white; width:100%;">Subir BD Inicial (Clic solo una vez)</button>
 
     <div class="main-container">
         
@@ -92,37 +91,6 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        // ====================================================================
-        // SCRIPT TEMPORAL PARA SUBIR PRODUCTOS (Solo lo usarás tú como Admin)
-        // ====================================================================
-        window.subirProductosIniciales = async function() {
-            const boton = document.getElementById("btn-subir-datos");
-            boton.innerText = "Subiendo...";
-            boton.disabled = true;
-
-            // Aquí defines los productos que quieres meter a tu base de datos
-            const productosPrueba = [
-                
-                { nombre: "Kit Arduino Master", precio: 1200, categoria: "Electrónica", imagenUrl: "https://tse1.mm.bing.net/th/id/OIP.C7Z7kvkyBuvXO3iJ4nkeywHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" },
-                { nombre: "Memoria RAM 2 x 32 GB DDR5", precio: 6000, categoria: "Hardware", imagenUrl: "https://media.ldlc.com/r1600/ld/products/00/05/98/21/LD0005982195_0005982231_0005982241.jpg" },
-                { nombre: "Módulo WiFi ESP32", precio: 350, categoria: "Electrónica", imagenUrl: "https://laelectronica.com.gt/image/cache/catalog/Productos/Arduinos/ESP32S-CH340-1-1200x1200.jpeg" },
-                { nombre: "Laptop HP", precio: 10000, categoria: "Hardware", imagenUrl: "https://tse2.mm.bing.net/th/id/OIP.xc3VPrHAf1glk5l_GSbvKQHaF2?rs=1&pid=ImgDetMain&o=7&rm=3" }
-            ];
-
-            try {
-                for (let prod of productosPrueba) {
-                    await addDoc(collection(db, "productos"), prod);
-                    console.log("Subido a Firebase:", prod.nombre);
-                }
-                alert("¡Base de datos poblada con éxito! Revisa tu consola de Firebase.");
-                cargarProductos(); // Recargamos la vista para que aparezcan
-                boton.style.display = "none"; // Ocultamos el botón tras usarlo
-            } catch (error) {
-                console.error("Error al subir:", error);
-                alert("Hubo un error, revisa la consola (F12). ¿Activaste las reglas de prueba?");
-            }
-        };
 
         // ====================================================================
         // FUNCIÓN PARA MOSTRAR LOS PRODUCTOS EN PANTALLA
