@@ -5,18 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Style.css">
     <title>TechMarket - Tu Tienda TI</title>
-    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="login-container">
-  <h2>Iniciar Sesión</h2>
+<header class="header">
+    <div class="logo">TechMarket</div>
 
-  <input type="email" id="email" placeholder="Correo">
-  <input type="password" id="password" placeholder="Contraseña">
+    <div class="search-bar">
+        <input type="text" placeholder="Buscar componentes, licencias y más...">
+        <button>Buscar</button>
+    </div>
 
-  <button onclick="login()">Entrar</button>
-  <button onclick="register()">Registrarse</button>
+    <div class="auth-buttons">
+        <button onclick="mostrarLogin()">Iniciar sesión</button>
+        <button onclick="mostrarRegistro()">Registrarse</button>
+    </div>
+
+    <div class="cart">🛒 Carrito (0)</div>
+</header>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechMarket - Tu Tienda TI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">TechMarket</div>
+
+    <div class="search-bar">
+        <input type="text" placeholder="Buscar componentes, licencias y más...">
+        <button>Buscar</button>
+    </div>
+
+    <div class="auth-buttons">
+        <button onclick="mostrarLogin()">Iniciar sesión</button>
+        <button onclick="mostrarRegistro()">Registrarse</button>
+    </div>
+
+    <div class="cart">🛒 Carrito (0)</div>
+</header>
+
+<!-- FORMULARIO LOGIN / REGISTRO -->
+<div class="auth-container" id="authContainer">
+
+    <div id="loginForm" class="form-box">
+        <h3>Iniciar Sesión</h3>
+        <input type="email" id="emailLogin" placeholder="Correo">
+        <input type="password" id="passwordLogin" placeholder="Contraseña">
+        <button onclick="login()">Entrar</button>
+    </div>
+
+    <div id="registerForm" class="form-box">
+        <h3>Registrarse</h3>
+        <input type="email" id="emailRegister" placeholder="Correo">
+        <input type="password" id="passwordRegister" placeholder="Contraseña">
+        <button onclick="register()">Crear cuenta</button>
+    </div>
+
+    <button class="cerrar" onclick="cerrarForm()">X</button>
+    <p id="mensaje"></p>
+</div>
 
   <p id="mensaje"></p>
     </div>
