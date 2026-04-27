@@ -25,82 +25,73 @@
     </div>
 </header>
 
-<div class="auth-container" id="authContainer">
+<div class="auth-container" id="authContainer" style="display: none;">
     <div class="auth-box">
         <button class="cerrar" onclick="cerrarForm()">×</button>
         
         <div id="loginForm" class="form-box active">
-            <h3>Bienvenido</h3>
-            <p>Ingresa tus credenciales</p>
-            <input type="email" id="emailLogin" placeholder="Correo electrónico" required>
-            <input type="password" id="passwordLogin" placeholder="Contraseña" required>
-            <button onclick="login()">Entrar</button>
-            <p class="switch">¿No tienes cuenta? <span onclick="irARegistro()">Crear cuenta</span></p>
+            <h3>Iniciar sesión</h3>
+            <div class="input-group">
+                <label for="emailLogin">Correo electrónico</label>
+                <input type="email" id="emailLogin" required>
+            </div>
+            <div class="input-group">
+                <label for="passwordLogin">Contraseña</label>
+                <input type="password" id="passwordLogin" required>
+            </div>
+            <button class="btn-primary" onclick="login()">Continuar</button>
+            <p class="switch">¿Eres nuevo en TechMarket? <span onclick="irARegistro()">Crea tu cuenta</span></p>
         </div>
 
         <div id="registerForm" class="form-box">
-            <h3>Registro de Usuario</h3>
-            <p>Completa tu perfil personal</p>
-            <input type="text" id="nombreRegister" placeholder="Nombre completo" required>
-            <input type="tel" id="telRegister" placeholder="Teléfono" required>
-            <input type="email" id="emailRegister" placeholder="Correo electrónico" required>
-            <input type="password" id="passwordRegister" placeholder="Contraseña (mín. 6 caracteres)" required>
+            <h3>Crear cuenta</h3>
             
-            <button onclick="register()">Finalizar Registro</button>
-            <p class="switch">¿Ya tienes cuenta? <span onclick="irALogin()">Iniciar sesión</span></p>
+            <div class="input-group">
+                <label for="nombreRegister">Tu nombre</label>
+                <input type="text" id="nombreRegister" placeholder="Nombre y apellido" required>
+            </div>
+
+            <div class="input-group">
+                <label for="telRegister">Número de celular (opcional)</label>
+                <input type="tel" id="telRegister">
+            </div>
+
+            <div class="input-group">
+                <label for="emailRegister">Correo electrónico</label>
+                <input type="email" id="emailRegister" required>
+            </div>
+
+            <div class="input-group">
+                <label for="passwordRegister">Contraseña</label>
+                <input type="password" id="passwordRegister" placeholder="Al menos 6 caracteres" required>
+            </div>
+
+            <div class="input-group">
+                <label for="passwordConfirm">Vuelve a escribir la contraseña</label>
+                <input type="password" id="passwordConfirm" required>
+            </div>
+            
+            <button class="btn-primary" onclick="register()">Crear tu cuenta</button>
+            <p class="switch">¿Ya tienes una cuenta? <span onclick="irALogin()">Inicia sesión</span></p>
         </div>
 
-        <p id="mensaje"></p>
+        <p id="mensaje" style="margin-top: 15px; font-weight: bold; min-height: 20px;"></p>
     </div>
 </div>
 
-    <div class="main-container">
-        
-        <aside class="sidebar">
-            <h3>Categorías</h3>
-            <ul class="filter-list">
-                <li><label><input type="radio" name="categoria" value="todos" checked> Todos</label></li>
-                <li><label><input type="radio" name="categoria" value="hardware"> Hardware</label></li>
-                <li><label><input type="radio" name="categoria" value="electronica"> Electrónica</label></li>
-                <li><label><input type="radio" name="categoria" value="servicios"> Servicios</label></li>
-            </ul>
-        </aside>
+<main>
+    <section class="hero">
+        <h1>Bienvenido a TechMarket</h1>
+        <p>La mejor tienda de componentes electrónicos para tu computadora.</p>
+    </section>
 
-        <main class="product-grid" id="catalogo">
-            
-            <div class="product-card" data-categoria="hardware">
-                <div class="product-image">💻</div>
-                <div class="product-info">
-                    <span class="category-tag">Hardware</span>
-                    <h4 class="product-title">Tarjeta de Video RTX 4060</h4>
-                    <p class="product-price">$6,500.00</p>
-                    <button class="btn-details">Ver detalles</button>
-                </div>
-            </div>
+    <section class="products">
+        <h2>Nuestros Productos</h2>
+        <!-- Contenido de productos -->
+    </section>
+</main>
 
-            <div class="product-card" data-categoria="electronica">
-                <div class="product-image">🔌</div>
-                <div class="product-info">
-                    <span class="category-tag">Electrónica</span>
-                    <h4 class="product-title">Kit Arduino Master</h4>
-                    <p class="product-price">$1,200.00</p>
-                    <button class="btn-details">Ver detalles</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-categoria="servicios">
-                <div class="product-image">🛡️</div>
-                <div class="product-info">
-                    <span class="category-tag">Servicios TI</span>
-                    <h4 class="product-title">Auditoría de Seguridad Web</h4>
-                    <p class="product-price">$3,000.00</p>
-                    <button class="btn-details">Ver detalles</button>
-                </div>
-            </div>
-
-        </main>
-    </div>
-    <script type="module" src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
 
