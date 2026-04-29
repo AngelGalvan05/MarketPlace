@@ -99,8 +99,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
+        // Agregamos doc y setDoc para guardar los datos extra del usuario
+        import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        // Agregamos las funciones de Autenticación
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         // Datos de la Base de Datos
         const firebaseConfig = {
             apiKey: "AIzaSyCvxilsuHcDCynIDoaAbNBCvoY47OCuv0g",
@@ -113,6 +115,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app); 
 
         // ====================================================================
         // CARGA DE PRODUCTOS DESDE FIREBASE
@@ -184,6 +187,112 @@
                 }
             });
         });
+
+        // ====================================================================
+        // LÓGICA DE NEGOCIO REAL (FIREBASE AUTH Y FIRESTORE)
+        // ====================================================================
+
+        window.register = async function() {
+            const nombre = document.getElementById("nombreRegister").value.trim();
+            const email = document.getElementById("emailRegister").value.trim();
+            const tel = document.getElementById("telRegister").value.trim();
+            const pass = document.getElementById("passwordRegister").value;
+            const passConfirm = document.getElementById("passwordConfirm").value;
+            const mensaje = document.getElementById("mensaje");
+
+            // Validaciones básicas
+            if (nombre === "" || email === "" || pass === "" || passConfirm === "") {
+                mensaje.innerText = "Error: Todos los campos obligatorios deben llenarse.";
+                mensaje.style.color = "#d93025";
+                return;
+            }
+            if (pass.length < 6) {
+                mensaje.innerText = "La contraseña debe tener al menos 6 caracteres.";
+                mensaje.style.color = "#d93025";
+                return;
+            }
+            if (pass !== passConfirm) {
+                mensaje.innerText = "Las contraseñas no coinciden.";
+                mensaje.style.color = "#d93025";
+                return;
+            }
+
+            mensaje.innerText = "Creando cuenta...";
+            mensaje.style.color = "#007185";
+
+            try {
+                // 1. Crear el usuario en Firebase Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                const user = userCredential.user;
+
+                // 2. Guardar el nombre y teléfono en Firestore en una colección "usuarios"
+                // Usamos el UID (ID único) del usuario como nombre del documento
+                await setDoc(doc(db, "usuarios", user.uid), {
+                    nombre: nombre,
+                    telefono: tel,
+                    email: email,
+                    fechaRegistro: new Date()
+                });
+
+                mensaje.innerText = "¡Cuenta creada con éxito! Redirigiendo...";
+                mensaje.style.color = "#28a745";
+
+                setTimeout(() => {
+                    window.irALogin();
+                    mensaje.innerText = "";
+                    document.getElementById("nombreRegister").value = "";
+                    document.getElementById("emailRegister").value = "";
+                    document.getElementById("telRegister").value = "";
+                    document.getElementById("passwordRegister").value = "";
+                    document.getElementById("passwordConfirm").value = "";
+                }, 2000);
+
+            } catch (error) {
+                console.error("Error al registrar:", error);
+                if (error.code === 'auth/email-already-in-use') {
+                    mensaje.innerText = "Este correo ya está registrado.";
+                } else {
+                    mensaje.innerText = "Error al crear la cuenta: " + error.message;
+                }
+                mensaje.style.color = "#d93025";
+            }
+        }
+
+        window.login = async function() {
+            const email = document.getElementById("emailLogin").value.trim();
+            const pass = document.getElementById("passwordLogin").value;
+            const mensaje = document.getElementById("mensaje");
+
+            if (email === "" || pass === "") {
+                mensaje.innerText = "Por favor, ingresa tu correo y contraseña.";
+                mensaje.style.color = "#d93025";
+                return;
+            }
+
+            mensaje.innerText = "Verificando credenciales...";
+            mensaje.style.color = "#007185";
+
+            try {
+                // Iniciar sesión con Firebase
+                await signInWithEmailAndPassword(auth, email, pass);
+                
+                mensaje.innerText = "¡Inicio de sesión exitoso!";
+                mensaje.style.color = "#28a745";
+
+                setTimeout(() => {
+                    window.cerrarForm();
+                    alert("Bienvenido a TechMarket");
+                    mensaje.innerText = "";
+                    document.getElementById("emailLogin").value = "";
+                    document.getElementById("passwordLogin").value = "";
+                }, 1000);
+
+            } catch (error) {
+                console.error("Error al iniciar sesión:", error);
+                mensaje.innerText = "Correo o contraseña incorrectos.";
+                mensaje.style.color = "#d93025";
+            }
+        }
 
         // Inicializar catálogo al abrir la página
         cargarProductos();
