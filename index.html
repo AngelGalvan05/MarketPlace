@@ -226,7 +226,12 @@
             const contenedorCatalogo = document.getElementById("catalogo");
             try {
                 const querySnapshot = await getDocs(collection(db, "productos"));
-                contenedorCatalogo.innerHTML += `
+                contenedorCatalogo.innerHTML = ""; // Limpiamos el contenedor primero
+
+                querySnapshot.forEach((doc) => {
+                    const producto = doc.data();
+                    
+                    contenedorCatalogo.innerHTML += `
                         <div class="product-card" data-categoria="${producto.categoria.toLowerCase()}">
                             <div class="product-image">
                                 <img src="${producto.imagenUrl}" alt="${producto.nombre}" style="width:100%; height:100%; object-fit:contain; padding:10px;">
@@ -242,6 +247,8 @@
                             </div>
                         </div>
                     `;
+                }); // Cierre del ciclo forEach
+
             } catch (error) {
                 console.error("Error al cargar:", error);
             }
