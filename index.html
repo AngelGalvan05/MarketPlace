@@ -32,6 +32,11 @@
             </div>
         </div>
     </header>
+    <nav class="top-nav">
+        <a href="#catalogo">Catálogo de Productos</a>
+        <a href="#nosotros">Acerca de nosotros</a>
+        <a href="#vision">Nuestra Visión</a>
+    </nav>
 
     <div class="auth-container" id="authContainer">
         <div class="auth-box">
@@ -97,19 +102,26 @@
 
     <div class="main-container">
         
-        <aside class="sidebar">
-            <h3>Categorías</h3>
-            <ul class="filter-list">
-                <li><label><input type="radio" name="categoria" value="todos" checked> Todos</label></li>
-                <li><label><input type="radio" name="categoria" value="hardware"> Hardware</label></li>
-                <li><label><input type="radio" name="categoria" value="electrónica"> Electrónica</label></li>
-                <li><label><input type="radio" name="categoria" value="servicios"> Servicios</label></li>
-            </ul>
-        </aside>
+        <div class="categorias-top">
+            <label><input type="radio" name="categoria" value="todos" checked> 📦 Todos</label>
+            <label><input type="radio" name="categoria" value="hardware"> 💻 Hardware</label>
+            <label><input type="radio" name="categoria" value="electrónica"> 🔌 Electrónica</label>
+            <label><input type="radio" name="categoria" value="servicios"> 🛡️ Servicios</label>
+        </div>
 
         <main class="product-grid" id="catalogo">
             </main>
     </div>
+    
+    <section id="nosotros" class="info-section">
+        <h2>Acerca de Nosotros</h2>
+        <p>TechMarket nace en Sabinas Hidalgo como un centro integral de soluciones tecnológicas. Somos un equipo apasionado por la innovación, enfocado en acercar componentes de hardware de alta calidad, electrónica especializada y servicios digitales profesionales a nuestra comunidad. Nuestro objetivo es facilitar a estudiantes, desarrolladores y empresas las herramientas que necesitan para llevar sus proyectos al siguiente nivel.</p>
+    </section>
+
+    <section id="vision" class="info-section">
+        <h2>Nuestra Visión</h2>
+        <p>Convertirnos en el marketplace tecnológico líder en la región, reconocido por nuestro excelente servicio al cliente, la calidad de nuestros productos y nuestra capacidad para adaptarnos a las nuevas tendencias del desarrollo web, la electrónica y la gestión ágil de negocios. Buscamos ser el principal aliado tecnológico para el crecimiento digital de nuestros clientes.</p>
+    </section>
 
     <script src="app.js"></script>
 
