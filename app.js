@@ -49,3 +49,24 @@ window.irALogin = function() {
     document.getElementById("loginForm").style.display = "block";
     document.getElementById("mensaje").innerText = "";
 }
+
+// ==================== LÓGICA DEL CARRUSEL AUTOMÁTICO ====================
+const slides = document.querySelectorAll('.slide');
+let currentIndex = 0;
+
+function moveSlider() {
+    currentIndex++;
+
+    // Si llega al final (después de Servicios), regresa a Tecnología (0)
+    if (currentIndex >= slides.length) {
+        currentIndex = 0;
+    }
+
+    // Desplaza horizontalmente el contenedor según la diapositiva activa
+    slides.forEach((slide) => {
+        slide.style.transform = `translateX(-${currentIndex * 100}%)`;
+    });
+}
+
+// Cambia de imagen automáticamente cada 4 segundos (4000 milisegundos)
+setInterval(moveSlider, 4000);

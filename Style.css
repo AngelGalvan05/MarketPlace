@@ -410,3 +410,49 @@ body {
     font-size: 16px;
     text-align: justify;
 }
+
+/* ==================== ESTILOS DEL CARRUSEL ==================== */
+#hero-slider {
+    position: relative;
+    width: 100%;
+    height: 350px; /* Controla la altura del banner */
+    overflow: hidden; /* Esconde las imágenes que están fuera de la pantalla */
+    margin-bottom: 25px; /* Espacio antes de la sección de productos */
+}
+
+.slider-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.8s ease-in-out; /* Velocidad y suavidad del movimiento */
+}
+
+.slide-content {
+    text-align: center;
+    color: white;
+    font-family: sans-serif;
+}
+
+.slide-content h2 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    margin: 0 0 10px 0;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.slide-content p {
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0.9;
+}
