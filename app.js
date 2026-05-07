@@ -1,11 +1,10 @@
 /**
- * Lógica de Autenticación para TechMarket
- * Maneja la navegación de formularios, validaciones de registro y login.
+ * Lógica de UI para TechMarket
+ * Maneja la navegación de formularios y el carrusel.
  */
 
-// --- FUNCIONES DE NAVEGACIÓN (UI) ---
+// ==================== LÓGICA DE MODALES (LOGIN/REGISTRO) ====================
 
-// Muestra el contenedor principal y activa el formulario de Login
 window.mostrarLogin = function() {
     const container = document.getElementById("authContainer");
     const loginForm = document.getElementById("loginForm");
@@ -15,10 +14,9 @@ window.mostrarLogin = function() {
     container.style.display = "flex";
     loginForm.style.display = "block";
     registerForm.style.display = "none";
-    mensaje.innerText = ""; // Limpia mensajes previos
+    mensaje.innerText = ""; 
 }
 
-// Muestra el contenedor principal y activa el formulario de Registro
 window.mostrarRegistro = function() {
     const container = document.getElementById("authContainer");
     const loginForm = document.getElementById("loginForm");
@@ -31,19 +29,16 @@ window.mostrarRegistro = function() {
     mensaje.innerText = "";
 }
 
-// Cierra el modal de autenticación
 window.cerrarForm = function() {
     document.getElementById("authContainer").style.display = "none";
 }
 
-// Cambia la vista interna de Login a Registro
 window.irARegistro = function() {
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("registerForm").style.display = "block";
     document.getElementById("mensaje").innerText = "";
 }
 
-// Cambia la vista interna de Registro a Login
 window.irALogin = function() {
     document.getElementById("registerForm").style.display = "none";
     document.getElementById("loginForm").style.display = "block";
@@ -55,18 +50,21 @@ const slides = document.querySelectorAll('.slide');
 let currentIndex = 0;
 
 function moveSlider() {
+    // Si no hay slides, no hace nada (evita errores)
+    if (slides.length === 0) return; 
+
     currentIndex++;
 
-    // Si llega al final (después de Servicios), regresa a Tecnología (0)
+    // Si llega al final, regresa a la primera imagen (0)
     if (currentIndex >= slides.length) {
         currentIndex = 0;
     }
 
-    // Desplaza horizontalmente el contenedor según la diapositiva activa
+    // Desplaza horizontalmente el contenedor
     slides.forEach((slide) => {
         slide.style.transform = `translateX(-${currentIndex * 100}%)`;
     });
 }
 
-// Cambia de imagen automáticamente cada 4 segundos (4000 milisegundos)
+// Cambia de imagen automáticamente cada 4 segundos
 setInterval(moveSlider, 4000);

@@ -65,7 +65,7 @@
         <a href="#vision">Nuestra Visión</a>
     </nav>
 
-    <div class="auth-container" id="authContainer">
+    < class="auth-container" id="authContainer">
         <div class="auth-box">
             <button class="cerrar" onclick="cerrarForm()">×</button>
             
@@ -81,14 +81,6 @@
                 </div>
                 <button class="btn-primary" onclick="login()">Continuar</button>
                 <p class="switch">¿Eres nuevo en TechMarket? <span onclick="irARegistro()">Crea tu cuenta</span></p>
-            </div>
-
-            <div class="auth-container" id="detallesContainer" style="display: none; z-index: 1001;">
-                <div class="auth-box" style="max-width: 500px; text-align: center;">
-                <button class="cerrar" onclick="cerrarDetalles()">×</button>
-                    <div id="contenidoDetalles">
-                    </div>
-                </div>
             </div>
 
             <div id="registerForm" class="form-box">
@@ -124,6 +116,13 @@
             </div>
 
             <p id="mensaje"></p>
+        </div>
+        <div class="auth-container" id="detallesContainer" style="display: none; z-index: 1001;">
+            <div class="auth-box" style="max-width: 500px; text-align: center;">
+            <button class="cerrar" onclick="cerrarDetalles()">×</button>
+                <div id="contenidoDetalles">
+                </div>
+            </div>
         </div>
     </div>
 
