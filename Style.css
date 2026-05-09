@@ -1,4 +1,4 @@
-/* 1. Reset y Estilos Globales */
+/* ==================== 1. RESET Y GLOBALES ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -7,11 +7,11 @@
 }
 
 body {
-    background-color: #f3f3f3; /* Gris claro tipo Amazon */
+    background-color: #f3f3f3;
     color: #111;
 }
 
-/* 2. Cabecera (Header) */
+/* ==================== 2. HEADER Y NAVEGACIÓN ==================== */
 .header {
     background-color: #ffe600;
     padding: 10px 50px;
@@ -53,7 +53,6 @@ body {
     border-radius: 0 4px 4px 0;
 }
 
-/* 3. Botones de la Cabecera */
 .user-menu {
     display: flex;
     align-items: center;
@@ -80,15 +79,215 @@ body {
     cursor: pointer;
 }
 
-/* 4. MODAL DE AUTENTICACIÓN (Login/Registro) */
+.top-nav {
+    background-color: #232f3e;
+    padding: 12px 50px;
+    display: flex;
+    gap: 25px;
+}
+
+.top-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.top-nav a:hover {
+    color: #f0c14b;
+    text-decoration: underline;
+}
+
+/* ==================== 3. CARRUSEL (HERO SLIDER) ==================== */
+#hero-slider {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.slider-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.8s ease-in-out;
+}
+
+.slide-content {
+    text-align: center;
+    color: white;
+    font-family: sans-serif;
+}
+
+.slide-content h2 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    margin: 0 0 10px 0;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.slide-content p {
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* ==================== 4. LAYOUT PRINCIPAL Y FILTROS ==================== */
+.main-container {
+    display: block;
+    max-width: 1300px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.categorias-top {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.categorias-top label {
+    padding: 8px 20px;
+    background: #e3e6e8;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+}
+
+.categorias-top label:hover {
+    background: #d1d5d8;
+}
+
+.categorias-top input[type="radio"] {
+    display: none;
+}
+
+.categorias-top label:has(input:checked) {
+    background: #ffe600;
+    color: #111;
+    box-shadow: 0 0 0 2px #e0ca00;
+}
+
+/* ==================== 5. TARJETAS DE PRODUCTOS ==================== */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.product-image {
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.category-tag {
+    background: #e3e6e8;
+    color: #444;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    align-self: flex-start;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.product-title {
+    font-size: 15px;
+    color: #0F1111;
+    margin-bottom: 8px;
+    min-height: 40px;
+}
+
+.product-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #B12704;
+    margin-bottom: 15px;
+    margin-top: auto;
+}
+
+/* ==================== 6. SECCIONES INFORMATIVAS ==================== */
+.info-section {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border-top: 4px solid #2d3277;
+}
+
+.info-section h2 {
+    color: #2d3277;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.info-section p {
+    color: #444;
+    line-height: 1.6;
+    font-size: 16px;
+    text-align: justify;
+}
+
+/* ==================== 7. MODALES Y FORMULARIOS ==================== */
 .auth-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro */
-    display: none; /* JS lo cambia a 'flex' */
+    background: rgba(0, 0, 0, 0.6);
+    display: none; 
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -121,46 +320,16 @@ body {
     background: #ddd;
 }
 
-/* 5. Estilos de Formulario (Labels e Inputs) */
-.form-box {
-    display: none;
-}
+.form-box { display: none; }
+.form-box.active { display: block; }
 
-.form-box.active {
-    display: block;
-}
+.form-box h3 { margin-bottom: 20px; font-size: 22px; }
 
-.form-box h3 {
-    margin-bottom: 20px;
-    font-size: 22px;
-}
+.input-group { margin-bottom: 15px; text-align: left; }
+.input-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+.input-group input { width: 100%; padding: 10px; border: 1px solid #a6a6a6; border-radius: 3px; outline: none; }
+.input-group input:focus { border-color: #e77600; box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5); }
 
-.input-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.input-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #a6a6a6;
-    border-radius: 3px;
-    outline: none;
-}
-
-.input-group input:focus {
-    border-color: #e77600; /* Naranja Amazon */
-    box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5);
-}
-
-/* 6. Botón Principal (Amazon Style) */
 .btn-primary {
     width: 100%;
     padding: 10px;
@@ -172,128 +341,7 @@ body {
     margin-top: 10px;
     font-weight: bold;
 }
-
-.btn-primary:hover {
-    background: linear-gradient(to bottom, #f5d78e, #eeb933);
-}
-
-/* 7. Mensajes de error/éxito y Enlaces */
-#mensaje {
-    margin-top: 15px;
-    font-size: 13px;
-    text-align: center;
-    min-height: 18px;
-}
-
-.switch {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 13px;
-}
-
-.switch span {
-    color: #0066c0;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.switch span:hover {
-    color: #c45500;
-}
-
-/* 8. Layout de Productos (Grid) */
-.main-container {
-    display: flex;
-    max-width: 1300px;
-    margin: 20px auto;
-    gap: 20px;
-    padding: 0 20px;
-}
-
-.product-grid {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.product-card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 4px;
-    transition: 0.2s;
-    display: flex;
-    flex-direction: column;
-}
-
-.product-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* =========================================
-   NUEVAS CLASES AGREGADAS PARA EL CÓDIGO 2 
-   ========================================= */
-
-/* 9. Barra Lateral (Filtros) */
-
-.filter-list {
-    list-style: none;
-}
-
-.filter-list li {
-    margin-bottom: 12px;
-}
-
-.filter-list label {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 15px;
-}
-
-/* 10. Elementos Internos de la Tarjeta de Producto */
-.product-image {
-    height: 160px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 60px; /* Por si usan emojis temporalmente */
-    margin-bottom: 15px;
-}
-
-.product-info {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.category-tag {
-    background: #e3e6e8;
-    color: #444;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: bold;
-    align-self: flex-start;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-}
-
-.product-title {
-    font-size: 15px;
-    color: #0F1111;
-    margin-bottom: 8px;
-    min-height: 40px; /* Mantiene alineación aunque el texto sea corto */
-}
-
-.product-price {
-    font-size: 20px;
-    font-weight: bold;
-    color: #B12704; /* Rojo precio de Amazon */
-    margin-bottom: 15px;
-    margin-top: auto; /* Empuja el precio y el botón hacia abajo */
-}
+.btn-primary:hover { background: linear-gradient(to bottom, #f5d78e, #eeb933); }
 
 .btn-details {
     width: 100%;
@@ -306,153 +354,9 @@ body {
     transition: 0.2s;
     font-weight: bold;
 }
+.btn-details:hover { background: #1a1e54; }
 
-.btn-details:hover {
-    background: #1a1e54;
-}
-
-/* =========================================
-   NUEVOS ESTILOS: NAVEGACIÓN Y SECCIONES
-   ========================================= */
-
-/* Barra de navegación oscura debajo del header */
-.top-nav {
-    background-color: #232f3e; /* Azul oscuro tipo Amazon */
-    padding: 10px 50px;
-    display: flex;
-    gap: 20px;
-}
-
-.top-nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 0.2s;
-}
-
-.top-nav a:hover {
-    color: #f0c14b;
-    text-decoration: underline;
-}
-
-/* Ajuste del main-container para quitar el espacio lateral */
-.main-container {
-    display: block; /* Cambiamos de flex a block porque ya no hay barra lateral */
-    max-width: 1300px;
-    margin: 20px auto;
-    padding: 0 20px;
-}
-
-/* Filtros Horizontales (Botones) */
-.categorias-top {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 30px;
-    padding: 15px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.categorias-top label {
-    padding: 8px 20px;
-    background: #e3e6e8;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #333;
-}
-
-.categorias-top label:hover {
-    background: #d1d5d8;
-}
-
-/* Ocultamos el círculo del radio button por defecto */
-.categorias-top input[type="radio"] {
-    display: none;
-}
-
-/* Estilo cuando la categoría está seleccionada */
-.categorias-top label:has(input:checked) {
-    background: #ffe600;
-    color: #111;
-    box-shadow: 0 0 0 2px #e0ca00;
-}
-
-/* Estilos para las secciones Acerca de / Visión */
-.info-section {
-    max-width: 1300px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    border-top: 4px solid #2d3277;
-}
-
-.info-section h2 {
-    color: #2d3277;
-    margin-bottom: 15px;
-    font-size: 24px;
-}
-
-.info-section p {
-    color: #444;
-    line-height: 1.6;
-    font-size: 16px;
-    text-align: justify;
-}
-
-/* ==================== ESTILOS DEL CARRUSEL ==================== */
-#hero-slider {
-    position: relative;
-    width: 100%;
-    height: 350px; /* Controla la altura del banner */
-    overflow: hidden; /* Esconde las imágenes que están fuera de la pantalla */
-    margin-bottom: 25px; /* Espacio antes de la sección de productos */
-}
-
-.slider-container {
-    display: flex;
-    width: 100%;
-    height: 100%;
-}
-
-.slide {
-    min-width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.8s ease-in-out; /* Velocidad y suavidad del movimiento */
-}
-
-.slide-content {
-    text-align: center;
-    color: white;
-    font-family: sans-serif;
-}
-
-.slide-content h2 {
-    font-size: 3rem;
-    text-transform: uppercase;
-    margin: 0 0 10px 0;
-    letter-spacing: 2px;
-    font-weight: bold;
-}
-
-.slide-content p {
-    font-size: 1.2rem;
-    margin: 0;
-    opacity: 0.9;
-}
+#mensaje { margin-top: 15px; font-size: 13px; text-align: center; min-height: 18px; }
+.switch { text-align: center; margin-top: 15px; font-size: 13px; }
+.switch span { color: #0066c0; cursor: pointer; text-decoration: underline; }
+.switch span:hover { color: #c45500; }
