@@ -1,87 +1,14 @@
-/**
- * Lógica de UI para TechMarket
- * Maneja la navegación de formularios y el carrusel.
- */
-
-// ==================== LÓGICA DE MODALES (LOGIN/REGISTRO) ====================
-
-window.mostrarLogin = function() {
-    const container = document.getElementById("authContainer");
-    const loginForm = document.getElementById("loginForm");
-    const registerForm = document.getElementById("registerForm");
-    const mensaje = document.getElementById("mensaje");
-
-    document.getElementById('detallesContainer').style.display = 'none';
-    container.style.display = "flex";
-    loginForm.style.display = "block";
-    registerForm.style.display = "none";
-    mensaje.innerText = ""; 
-}
-
-window.mostrarRegistro = function() {
-    const container = document.getElementById("authContainer");
-    const loginForm = document.getElementById("loginForm");
-    const registerForm = document.getElementById("registerForm");
-    const mensaje = document.getElementById("mensaje");
-
-    document.getElementById('detallesContainer').style.display = 'none';
-    container.style.display = "flex";
-    registerForm.style.display = "block";
-    loginForm.style.display = "none";
-    mensaje.innerText = "";
-}
-
-window.cerrarForm = function() {
-    document.getElementById("authContainer").style.display = "none";
-}
-
-window.irARegistro = function() {
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("registerForm").style.display = "block";
-    document.getElementById("mensaje").innerText = "";
-}
-
-window.irALogin = function() {
-    document.getElementById("registerForm").style.display = "none";
-    document.getElementById("loginForm").style.display = "block";
-    document.getElementById("mensaje").innerText = "";
-}
-
-// ==================== LÓGICA DEL CARRUSEL AUTOMÁTICO ====================
-const slides = document.querySelectorAll('.slide');
-let currentIndex = 0;
-
-function moveSlider() {
-    // Si no hay slides, no hace nada (evita errores)
-    if (slides.length === 0) return; 
-
-    currentIndex++;
-
-    // Si llega al final, regresa a la primera imagen (0)
-    if (currentIndex >= slides.length) {
-        currentIndex = 0;
-    }
-
-    // Desplaza horizontalmente el contenedor
-    slides.forEach((slide) => {
-        slide.style.transform = `translateX(-${currentIndex * 100}%)`;
-    });
-}
-
-// Cambia de imagen automáticamente cada 4 segundos
-setInterval(moveSlider, 4000);
-
 // ====================================================================
 // 1. CONFIGURACIÓN DEL USUARIO Y CONTROL DE ACCESO
 // ====================================================================
 let carrito = [];
-let usuarioLogueado = false; // Empieza en false hasta que se registre o inicie sesión
-let nombreDeLaCuenta = "";   // Empezará vacío y se llenará al registrarse
+let usuarioLogueado = false; // Empieza en false (bloqueado) hasta registrarse
+let nombreDeLaCuenta = "";   // Se llenará al crear la cuenta
 
 // Función para verificar si tiene acceso a la tienda
 function verificarAcceso() {
     const seccionVentas = document.getElementById('seccion-ventas');
-    if (!seccionVentas) return; // Evita errores si no existe el elemento aún
+    if (!seccionVentas) return; // Evita errores si aún no se renderiza la sección
 
     if (!usuarioLogueado) {
         seccionVentas.classList.add('ocultar-tienda');
@@ -92,17 +19,105 @@ function verificarAcceso() {
     }
 }
 
-// Llamada inicial
+// Llamada inicial para bloquear la tienda al entrar a la página
 verificarAcceso();
 
-// 3. FUNCIONES DEL CARRITO
+
+// ====================================================================
+// 2. VISTAS DEL FORMULARIO DE ACCESO (Tus funciones originales)
+// ====================================================================
+window.mostrarLogin = function() {
+    const container = document.getElementById("authContainer");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const mensaje = document.getElementById("mensaje");
+
+    container.style.display = "flex";
+    loginForm.style.display = "block";
+    registerForm.style.display = "none";
+    if (mensaje) mensaje.innerText = ""; 
+}
+
+window.mostrarRegistro = function() {
+    const container = document.getElementById("authContainer");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const mensaje = document.getElementById("mensaje");
+
+    container.style.display = "flex";
+    registerForm.style.display = "block";
+    loginForm.style.display = "none";
+    if (mensaje) mensaje.innerText = "";
+}
+
+window.cerrarForm = function() {
+    document.getElementById("authContainer").style.display = "none";
+}
+
+window.irARegistro = function() {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("registerForm").style.display = "block";
+    const mensaje = document.getElementById("mensaje");
+    if (mensaje) mensaje.innerText = "";
+}
+
+window.irALogin = function() {
+    document.getElementById("registerForm").style.display = "none";
+    document.getElementById("loginForm").style.display = "block";
+    const mensaje = document.getElementById("mensaje");
+    if (mensaje) mensaje.innerText = "";
+}
+
+
+// ====================================================================
+// 3. LOGICA DE REGISTRO (¡Esta es la que hace la magia!)
+// ====================================================================
+window.register = function() {
+    const inputNombre = document.getElementById('nombreRegister');
+    const inputEmail = document.getElementById('emailRegister');
+    const inputPassword = document.getElementById('passwordRegister');
+    const inputPasswordConfirm = document.getElementById('passwordConfirm');
+
+    // Validación: que no haya campos obligatorios vacíos
+    if (!inputNombre.value || !inputEmail.value || !inputPassword.value || !inputPasswordConfirm.value) {
+        alert("Por favor, llena todos los campos obligatorios.");
+        return;
+    }
+
+    // Validación: que las contraseñas coincidan
+    if (inputPassword.value !== inputPasswordConfirm.value) {
+        alert("Las contraseñas no coinciden.");
+        return;
+    }
+
+    // Guardamos el nombre ingresado en el HTML
+    nombreDeLaCuenta = inputNombre.value;
+    
+    // Iniciamos la sesión del usuario
+    usuarioLogueado = true;
+
+    // Actualizamos el acceso para mostrar la tienda de inmediato
+    verificarAcceso();
+
+    // Notificación y cerramos la ventana de registro
+    alert(`¡Cuenta creada con éxito! Bienvenido(a), ${nombreDeLaCuenta}`);
+    cerrarForm();
+};
+
+
+// ====================================================================
+// 4. FUNCIONES DEL CARRITO
+// ====================================================================
 window.agregarAlCarrito = function(nombre, precio) {
     if (!usuarioLogueado) {
         alert("Error: Debes iniciar sesión primero.");
         return;
     }
     carrito.push({ nombre, precio });
-    document.getElementById('cantidad-carrito').innerText = carrito.length;
+    
+    // Asegúrate de que tienes un elemento con id="cantidad-carrito" en tu HTML (como en tu header)
+    const badge = document.getElementById('cantidad-carrito');
+    if (badge) badge.innerText = carrito.length;
 };
 
 window.verCarrito = function() {
@@ -113,31 +128,40 @@ window.verCarrito = function() {
     const displayUsuario = document.getElementById('nombre-usuario-display');
     const displayTotal = document.getElementById('precio-total');
 
-    displayUsuario.innerText = nombreDeLaCuenta;
-    lista.innerHTML = ""; // Limpiamos lista previa
-    let total = 0;
+    if (displayUsuario) displayUsuario.innerText = nombreDeLaCuenta;
+    if (lista) {
+        lista.innerHTML = ""; // Limpiamos lista previa
+        let total = 0;
 
-    carrito.forEach(item => {
-        lista.innerHTML += `
-            <div class="item-lista">
-                <span>${item.nombre}</span>
-                <span>$${item.precio}</span>
-            </div>`;
-        total += item.precio;
-    });
+        carrito.forEach(item => {
+            lista.innerHTML += `
+                <div class="item-lista">
+                    <span>${item.nombre}</span>
+                    <span>$${item.precio}</span>
+                </div>`;
+            total += item.precio;
+        });
 
-    displayTotal.innerText = total;
-    modal.style.display = "block";
+        if (displayTotal) displayTotal.innerText = total;
+    }
+    
+    if (modal) modal.style.display = "block";
 };
 
 window.cerrarCarrito = function() {
-    document.getElementById('modal-carrito').style.display = "none";
+    const modal = document.getElementById('modal-carrito');
+    if (modal) modal.style.display = "none";
 };
 
 window.procesarPago = function() {
-    const metodo = document.getElementById('metodo-pago').value;
+    const metodoHTML = document.getElementById('metodo-pago');
+    const metodo = metodoHTML ? metodoHTML.value : "Visa";
+    
     alert(`Gracias ${nombreDeLaCuenta}. Pagaste con ${metodo}. ¡Tu pedido va en camino!`);
     carrito = []; // Vaciamos carrito
-    document.getElementById('cantidad-carrito').innerText = "0";
+    
+    const badge = document.getElementById('cantidad-carrito');
+    if (badge) badge.innerText = "0";
+    
     cerrarCarrito();
 };
