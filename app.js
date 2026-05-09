@@ -95,42 +95,6 @@ function verificarAcceso() {
 // Llamada inicial
 verificarAcceso();
 
-// ====================================================================
-// 2. NUEVA FUNCIÓN DE REGISTRO
-// ====================================================================
-window.register = function() {
-    // 1. Capturamos el input del nombre
-    const inputNombre = document.getElementById('nombreRegister');
-    const inputEmail = document.getElementById('emailRegister');
-    const inputPassword = document.getElementById('passwordRegister');
-    const inputPasswordConfirm = document.getElementById('passwordConfirm');
-
-    // Validación básica de campos vacíos
-    if (!inputNombre.value || !inputEmail.value || !inputPassword.value || !inputPasswordConfirm.value) {
-        alert("Por favor, llena todos los campos obligatorios.");
-        return;
-    }
-
-    // Validación de contraseñas iguales
-    if (inputPassword.value !== inputPasswordConfirm.value) {
-        alert("Las contraseñas no coinciden.");
-        return;
-    }
-
-    // 2. Guardamos el nombre en nuestra variable global
-    nombreDeLaCuenta = inputNombre.value;
-    
-    // 3. Activamos la sesión
-    usuarioLogueado = true;
-
-    // 4. Actualizamos la tienda para que ya se pueda ver y comprar
-    verificarAcceso();
-
-    // 5. Mensaje de bienvenida y cerramos el formulario de registro
-    alert(`¡Cuenta creada con éxito! Bienvenido(a), ${nombreDeLaCuenta}`);
-    cerrarForm();
-};
-
 // 3. FUNCIONES DEL CARRITO
 window.agregarAlCarrito = function(nombre, precio) {
     if (!usuarioLogueado) {
