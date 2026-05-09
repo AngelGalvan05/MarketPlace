@@ -2,7 +2,7 @@
 // 1. CONFIGURACIÓN DEL USUARIO Y CONTROL DE ACCESO
 // ====================================================================
 let carrito = [];
-let usuarioLogueado = false; // Empieza en false (bloqueado) hasta registrarse
+let usuarioLogueado = true; // Empieza en false (bloqueado) hasta registrarse
 let nombreDeLaCuenta = "";   // Se llenará al crear la cuenta
 
 // Función para verificar si tiene acceso a la tienda
