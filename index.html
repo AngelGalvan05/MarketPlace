@@ -84,14 +84,6 @@
                 <p class="switch">¿Eres nuevo en TechMarket? <span onclick="irARegistro()">Crea tu cuenta</span></p>
             </div>
 
-            <div class="auth-container" id="detallesContainer" style="display: none; z-index: 1001;">
-                <div class="auth-box" style="max-width: 500px; text-align: center;">
-                <button class="cerrar" onclick="cerrarDetalles()">×</button>
-                    <div id="contenidoDetalles">
-                    </div>
-                </div>
-            </div>
-
             <div id="registerForm" class="form-box">
                 <h3>Crear cuenta</h3>
                 
@@ -125,6 +117,13 @@
             </div>
 
             <p id="mensaje"></p>
+        </div>
+    </div>
+
+    <div class="details-modal" id="detallesContainer" style="display: none; z-index: 1001;">
+        <div class="auth-box" style="max-width: 500px; text-align: center;">
+            <button class="cerrar" onclick="cerrarDetalles()">×</button>
+            <div id="contenidoDetalles"></div>
         </div>
     </div>
 

@@ -11,6 +11,7 @@ window.mostrarLogin = function() {
     const registerForm = document.getElementById("registerForm");
     const mensaje = document.getElementById("mensaje");
 
+    document.getElementById('detallesContainer').style.display = 'none';
     container.style.display = "flex";
     loginForm.style.display = "block";
     registerForm.style.display = "none";
@@ -23,6 +24,7 @@ window.mostrarRegistro = function() {
     const registerForm = document.getElementById("registerForm");
     const mensaje = document.getElementById("mensaje");
 
+    document.getElementById('detallesContainer').style.display = 'none';
     container.style.display = "flex";
     registerForm.style.display = "block";
     loginForm.style.display = "none";
