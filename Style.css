@@ -363,3 +363,40 @@ body {
 .switch { text-align: center; margin-top: 15px; font-size: 13px; }
 .switch span { color: #0066c0; cursor: pointer; text-decoration: underline; }
 .switch span:hover { color: #c45500; }
+
+/* Estilo de la Ventana Modal */
+.modal-carrito {
+    display: none; /* Inicia oculto */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 9999;
+}
+
+.modal-contenido {
+    background: white;
+    width: 90%; max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    color: #333;
+}
+
+.cerrar {
+    position: absolute; top: 10px; right: 15px;
+    font-size: 25px; cursor: pointer;
+}
+
+/* Regla para ocultar la sección de ventas */
+.ocultar-tienda {
+    display: none !important;
+}
+
+.item-lista {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
