@@ -586,3 +586,98 @@ body {
 }
 .dropdown-cerrar { color: #d93025 !important; }
 .dropdown-cerrar:hover { background: #fff0f0 !important; }
+
+/* ==================== MODAL GRANDE ==================== */
+.modal-grande {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-grande-box {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 620px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.modal-grande-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f8f8;
+}
+.modal-grande-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: #2d3277;
+}
+.modal-grande-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+.dir-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.dir-grid .dir-grupo:last-child {
+    grid-column: span 2;
+}
+.dir-card {
+    border: 2px solid #eee;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+.dir-card:hover { border-color: #2d3277; }
+.dir-card.seleccionada { border-color: #2d3277; background: #f0f2ff; }
+.dir-card input[type="radio"] {
+    margin-top: 3px;
+    accent-color: #2d3277;
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+}
+.dir-card-info p {
+    margin: 0;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.6;
+}
+.dir-card-info strong {
+    font-size: 14px;
+    color: #111;
+}
+.btn-agregar-dir {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    background: none;
+    color: #555;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 4px;
+}
+.btn-agregar-dir:hover {
+    border-color: #2d3277;
+    color: #2d3277;
+}

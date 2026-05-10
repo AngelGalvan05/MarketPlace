@@ -32,7 +32,7 @@
                     <div class="usuario-dropdown" id="usuario-dropdown">
                         <a onclick="cerrarMenuUsuario()">👤 Mi cuenta</a>
                         <a onclick="cerrarMenuUsuario()">📦 Mis compras</a>
-                        <a onclick="cerrarMenuUsuario()">📍 Dirección de envío</a>
+                        <a onclick="abrirModalDireccion()">📍 Dirección de envío</a>
                         <hr>
                         <a onclick="cerrarSesion()" class="dropdown-cerrar">🚪 Cerrar sesión</a>
                     </div>
@@ -257,6 +257,76 @@
 <!-- NOTIFICACIÓN FLOTANTE -->
 <div id="notif-agregado" class="notif-agregado" style="display:none;"></div>
 
+<!-- MODAL DIRECCIÓN -->
+<div id="modal-direccion" class="modal-grande" style="display:none;">
+    <div class="modal-grande-box">
+        <div class="modal-grande-header">
+            <h2>📍 Dirección de envío</h2>
+            <button onclick="cerrarModalDireccion()" class="panel-cerrar">×</button>
+        </div>
+        <div class="modal-grande-body">
+
+            <!-- Direcciones guardadas -->
+            <div id="lista-direcciones">
+                <p style="font-size:13px; color:#666; margin-bottom:16px;">Selecciona tu dirección de envío:</p>
+                <div id="direcciones-guardadas"></div>
+                <button class="btn-agregar-dir" onclick="mostrarFormDir()">+ Agregar nueva dirección</button>
+            </div>
+
+            <!-- Formulario nueva dirección (oculto por defecto) -->
+            <div id="form-nueva-dir" style="display:none;">
+                <p style="font-size:14px; font-weight:600; margin-bottom:16px; color:#2d3277;">Nueva dirección</p>
+                <div class="dir-grid">
+                    <div class="dir-grupo">
+                        <label>Estado</label>
+                        <select id="modal-dir-estado">
+                            <option value="">Selecciona tu estado</option>
+                            <option>Aguascalientes</option><option>Baja California</option>
+                            <option>Baja California Sur</option><option>Campeche</option>
+                            <option>Chiapas</option><option>Chihuahua</option>
+                            <option>Ciudad de México</option><option>Coahuila</option>
+                            <option>Colima</option><option>Durango</option>
+                            <option>Estado de México</option><option>Guanajuato</option>
+                            <option>Guerrero</option><option>Hidalgo</option>
+                            <option>Jalisco</option><option>Michoacán</option>
+                            <option>Morelos</option><option>Nayarit</option>
+                            <option>Nuevo León</option><option>Oaxaca</option>
+                            <option>Puebla</option><option>Querétaro</option>
+                            <option>Quintana Roo</option><option>San Luis Potosí</option>
+                            <option>Sinaloa</option><option>Sonora</option>
+                            <option>Tabasco</option><option>Tamaulipas</option>
+                            <option>Tlaxcala</option><option>Veracruz</option>
+                            <option>Yucatán</option><option>Zacatecas</option>
+                        </select>
+                    </div>
+                    <div class="dir-grupo">
+                        <label>Ciudad / Municipio</label>
+                        <input type="text" id="modal-dir-ciudad" placeholder="Ej. Sabinas Hidalgo">
+                    </div>
+                    <div class="dir-grupo">
+                        <label>Colonia</label>
+                        <input type="text" id="modal-dir-colonia" placeholder="Ej. Centro">
+                    </div>
+                    <div class="dir-grupo">
+                        <label>Calle y número</label>
+                        <input type="text" id="modal-dir-calle" placeholder="Ej. Av. Juárez 123">
+                    </div>
+                    <div class="dir-grupo">
+                        <label>Código Postal</label>
+                        <input type="text" id="modal-dir-cp" placeholder="Ej. 65200" maxlength="5">
+                    </div>
+                </div>
+                <p id="modal-dir-mensaje" style="font-size:12px; min-height:16px; color:#d93025;"></p>
+                <div style="display:flex; gap:10px; margin-top:8px;">
+                    <button class="btn-confirmar-panel" onclick="guardarNuevaDireccion()">Guardar dirección</button>
+                    <button class="btn-volver" onclick="ocultarFormDir()">Cancelar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
     <script src="app.js"></script>
 
     <script type="module">
@@ -411,12 +481,20 @@
         };
 
         window.irADireccion = function() {
-            if (carrito.length === 0) {
-                mostrarNotificacion('⚠ Tu carrito está vacío');
-                return;
-            }
-            document.getElementById('vista-carrito').style.display = 'none';
-            document.getElementById('vista-direccion').style.display = 'flex';
+        if (carrito.length === 0) {
+            mostrarNotificacion('⚠ Tu carrito está vacío');
+            return;
+        }
+        if (direcciones.length > 0) {
+            // Ya tiene dirección, confirmar directo
+            carrito = [];
+            renderizarCarrito();
+            cerrarCarrito();
+            mostrarNotificacion(`✔ Pedido confirmado. Pago con ${metodoPago}`);
+            return;
+        }
+        document.getElementById('vista-carrito').style.display = 'none';
+        document.getElementById('vista-direccion').style.display = 'flex';
         };
 
         window.volverAlCarrito = function() {
@@ -425,7 +503,134 @@
             document.getElementById('dir-mensaje').innerText = '';
         };
 
+                // ====================================================================
+        // MODAL DIRECCIÓN
+        // ====================================================================
+        let direcciones = [];
+        let direccionSeleccionadaIndex = 0;
+
+        window.abrirModalDireccion = async function() {
+            cerrarMenuUsuario();
+            document.getElementById('modal-direccion').style.display = 'flex';
+            ocultarFormDir();
+            await cargarDirecciones();
+        };
+
+        window.cerrarModalDireccion = function() {
+            document.getElementById('modal-direccion').style.display = 'none';
+        };
+
+        window.mostrarFormDir = function() {
+            document.getElementById('form-nueva-dir').style.display = 'block';
+            document.getElementById('lista-direcciones').style.display = 'none';
+        };
+
+        window.ocultarFormDir = function() {
+            document.getElementById('form-nueva-dir').style.display = 'none';
+            document.getElementById('lista-direcciones').style.display = 'block';
+            document.getElementById('modal-dir-mensaje').innerText = '';
+        };
+
+        async function cargarDirecciones() {
+            const user = auth.currentUser;
+            if (!user) return;
+            try {
+                const docSnap = await getDoc(doc(db, "usuarios", user.uid));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    direcciones = data.direcciones || [];
+                    if (data.direccion && direcciones.length === 0) {
+                        direcciones = [data.direccion];
+                    }
+                    direccionSeleccionadaIndex = data.direccionPrincipal || 0;
+                }
+                renderizarDirecciones();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function renderizarDirecciones() {
+            const contenedor = document.getElementById('direcciones-guardadas');
+            if (direcciones.length === 0) {
+                contenedor.innerHTML = '<p style="color:#aaa; font-size:13px; margin-bottom:16px;">No tienes direcciones guardadas.</p>';
+                return;
+            }
+            contenedor.innerHTML = '';
+            direcciones.forEach((dir, i) => {
+                const card = document.createElement('div');
+                card.className = `dir-card ${i === direccionSeleccionadaIndex ? 'seleccionada' : ''}`;
+                card.innerHTML = `
+                    <input type="radio" name="dir-radio" ${i === direccionSeleccionadaIndex ? 'checked' : ''} onchange="seleccionarDireccion(${i})">
+                    <div class="dir-card-info">
+                        <strong>${dir.calle}</strong>
+                        <p>${dir.colonia}, ${dir.ciudad}, ${dir.estado} CP ${dir.cp}</p>
+                    </div>`;
+                contenedor.appendChild(card);
+            });
+        }
+
+        window.seleccionarDireccion = async function(index) {
+            direccionSeleccionadaIndex = index;
+            document.querySelectorAll('.dir-card').forEach((c, i) => {
+                c.classList.toggle('seleccionada', i === index);
+            });
+            const user = auth.currentUser;
+            if (user) {
+                await setDoc(doc(db, "usuarios", user.uid), {
+                    direccionPrincipal: index
+                }, { merge: true });
+            }
+        };
+
+        window.guardarNuevaDireccion = async function() {
+            const estado  = document.getElementById('modal-dir-estado').value;
+            const ciudad  = document.getElementById('modal-dir-ciudad').value.trim();
+            const colonia = document.getElementById('modal-dir-colonia').value.trim();
+            const calle   = document.getElementById('modal-dir-calle').value.trim();
+            const cp      = document.getElementById('modal-dir-cp').value.trim();
+            const mensaje = document.getElementById('modal-dir-mensaje');
+
+            if (!estado || !ciudad || !colonia || !calle || !cp) {
+                mensaje.innerText = 'Por favor llena todos los campos.';
+                return;
+            }
+            if (cp.length !== 5 || isNaN(cp)) {
+                mensaje.innerText = 'El código postal debe tener 5 dígitos.';
+                return;
+            }
+
+            const nuevaDir = { estado, ciudad, colonia, calle, cp };
+            direcciones.push(nuevaDir);
+
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    await setDoc(doc(db, "usuarios", user.uid), {
+                        direcciones: direcciones
+                    }, { merge: true });
+                }
+                ocultarFormDir();
+                renderizarDirecciones();
+                mostrarNotificacion('✔ Dirección guardada');
+            } catch (e) {
+                mensaje.innerText = 'Error al guardar. Intenta de nuevo.';
+            }
+        };
+                
         window.guardarDireccionYConfirmar = async function() {
+            const user = auth.currentUser;
+            
+            // Si ya tiene dirección guardada, confirmar directo
+            if (direcciones.length > 0) {
+                carrito = [];
+                renderizarCarrito();
+                cerrarCarrito();
+                volverAlCarrito();
+                mostrarNotificacion(`✔ Pedido confirmado. Pago con ${metodoPago}`);
+                return;
+            }
+
             const estado  = document.getElementById('dir-estado').value;
             const ciudad  = document.getElementById('dir-ciudad').value.trim();
             const colonia = document.getElementById('dir-colonia').value.trim();
@@ -448,9 +653,10 @@
             mensaje.innerText = 'Guardando...';
 
             try {
-                const user = auth.currentUser;
                 if (user) {
+                    direcciones = [{ estado, ciudad, colonia, calle, cp }];
                     await setDoc(doc(db, "usuarios", user.uid), {
+                        direcciones: direcciones,
                         direccion: { estado, ciudad, colonia, calle, cp }
                     }, { merge: true });
                 }
