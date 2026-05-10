@@ -30,7 +30,7 @@
                         <span class="usuario-chevron">▾</span>
                     </div>
                     <div class="usuario-dropdown" id="usuario-dropdown">
-                        <a onclick="cerrarMenuUsuario()">👤 Mi cuenta</a>
+                        <a onclick="abrirModalCuenta()">👤 Mi cuenta</a>
                         <a onclick="cerrarMenuUsuario()">📦 Mis compras</a>
                         <a onclick="abrirModalDireccion()">📍 Dirección de envío</a>
                         <hr>
@@ -327,6 +327,72 @@
     </div>
 </div>
 
+<!-- MODAL MI CUENTA -->
+<div id="modal-cuenta" class="modal-grande" style="display:none;">
+    <div class="modal-grande-box">
+        <div class="modal-grande-header">
+            <h2>👤 Mi cuenta</h2>
+            <button onclick="cerrarModalCuenta()" class="panel-cerrar">×</button>
+        </div>
+        <div class="modal-grande-body">
+
+            <!-- Vista info -->
+            <div id="cuenta-vista-info">
+                <div class="cuenta-avatar-grande">
+                    <div class="cuenta-avatar-circulo" id="cuenta-avatar-circulo">U</div>
+                    <div>
+                        <h3 id="cuenta-nombre-display" style="margin:0; font-size:20px; color:#111;"></h3>
+                        <p id="cuenta-email-display" style="margin:4px 0 0; font-size:13px; color:#666;"></p>
+                    </div>
+                </div>
+
+                <div class="cuenta-datos">
+                    <div class="cuenta-fila">
+                        <span class="cuenta-label">Nombre</span>
+                        <span class="cuenta-valor" id="cuenta-nombre-val"></span>
+                    </div>
+                    <div class="cuenta-fila">
+                        <span class="cuenta-label">Correo</span>
+                        <span class="cuenta-valor" id="cuenta-email-val"></span>
+                    </div>
+                    <div class="cuenta-fila">
+                        <span class="cuenta-label">Teléfono</span>
+                        <span class="cuenta-valor" id="cuenta-tel-val">No registrado</span>
+                    </div>
+                    <div class="cuenta-fila">
+                        <span class="cuenta-label">Miembro desde</span>
+                        <span class="cuenta-valor" id="cuenta-fecha-val"></span>
+                    </div>
+                </div>
+
+                <button class="btn-confirmar-panel" style="margin-top:20px;" onclick="mostrarFormEditarCuenta()">✏️ Editar información</button>
+            </div>
+
+            <!-- Vista editar -->
+            <div id="cuenta-vista-editar" style="display:none;">
+                <p style="font-size:14px; font-weight:600; margin-bottom:16px; color:#2d3277;">Editar información</p>
+                <div class="dir-grid">
+                    <div class="dir-grupo">
+                        <label>Nombre completo</label>
+                        <input type="text" id="edit-nombre" placeholder="Tu nombre">
+                    </div>
+                    <div class="dir-grupo">
+                        <label>Teléfono</label>
+                        <input type="tel" id="edit-tel" placeholder="Tu número">
+                    </div>
+                </div>
+                <p style="font-size:12px; color:#888; margin:4px 0 16px;">El correo no se puede cambiar.</p>
+                <p id="edit-mensaje" style="font-size:12px; min-height:16px; color:#d93025;"></p>
+                <div style="display:flex; gap:10px; margin-top:8px;">
+                    <button class="btn-confirmar-panel" onclick="guardarCambiosCuenta()">Guardar cambios</button>
+                    <button class="btn-volver" onclick="cerrarFormEditarCuenta()">Cancelar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
     <script src="app.js"></script>
 
     <script type="module">
@@ -508,6 +574,90 @@
         // ====================================================================
         let direcciones = [];
         let direccionSeleccionadaIndex = 0;
+
+        // ====================================================================
+        // MODAL MI CUENTA
+        // ====================================================================
+        window.abrirModalCuenta = async function() {
+            cerrarMenuUsuario();
+            document.getElementById('modal-cuenta').style.display = 'flex';
+            cerrarFormEditarCuenta();
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                const docSnap = await getDoc(doc(db, "usuarios", user.uid));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const iniciales = (data.nombre || 'U').split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
+                    document.getElementById('cuenta-avatar-circulo').innerText = iniciales;
+                    document.getElementById('cuenta-nombre-display').innerText = data.nombre || '';
+                    document.getElementById('cuenta-email-display').innerText = user.email || '';
+                    document.getElementById('cuenta-nombre-val').innerText = data.nombre || '';
+                    document.getElementById('cuenta-email-val').innerText = user.email || '';
+                    document.getElementById('cuenta-tel-val').innerText = data.telefono || 'No registrado';
+                    const fecha = data.fechaRegistro?.toDate?.();
+                    document.getElementById('cuenta-fecha-val').innerText = fecha
+                        ? fecha.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })
+                        : 'No disponible';
+                    document.getElementById('edit-nombre').value = data.nombre || '';
+                    document.getElementById('edit-tel').value = data.telefono || '';
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
+        window.cerrarModalCuenta = function() {
+            document.getElementById('modal-cuenta').style.display = 'none';
+        };
+
+        window.mostrarFormEditarCuenta = function() {
+            document.getElementById('cuenta-vista-info').style.display = 'none';
+            document.getElementById('cuenta-vista-editar').style.display = 'block';
+            document.getElementById('edit-mensaje').innerText = '';
+        };
+
+        window.cerrarFormEditarCuenta = function() {
+            document.getElementById('cuenta-vista-info').style.display = 'block';
+            document.getElementById('cuenta-vista-editar').style.display = 'none';
+        };
+
+        window.guardarCambiosCuenta = async function() {
+            const nombre = document.getElementById('edit-nombre').value.trim();
+            const tel    = document.getElementById('edit-tel').value.trim();
+            const mensaje = document.getElementById('edit-mensaje');
+
+            if (!nombre) {
+                mensaje.innerText = 'El nombre no puede estar vacío.';
+                return;
+            }
+
+            mensaje.style.color = '#007185';
+            mensaje.innerText = 'Guardando...';
+
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    await setDoc(doc(db, "usuarios", user.uid), {
+                        nombre: nombre,
+                        telefono: tel
+                    }, { merge: true });
+
+                    nombreUsuarioActual = nombre;
+                    document.getElementById('nombre-usuario-display').innerText = `Hola, ${nombre}`;
+                    const iniciales = nombre.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
+                    document.getElementById('usuario-avatar-small').innerText = iniciales;
+                }
+                cerrarFormEditarCuenta();
+                await abrirModalCuenta();
+                mostrarNotificacion('✔ Información actualizada');
+            } catch (e) {
+                mensaje.style.color = '#d93025';
+                mensaje.innerText = 'Error al guardar. Intenta de nuevo.';
+            }
+        };
 
         window.abrirModalDireccion = async function() {
             cerrarMenuUsuario();
