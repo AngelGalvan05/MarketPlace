@@ -150,33 +150,100 @@
         <p>Convertirnos en el marketplace tecnológico líder en la región, reconocido por nuestro excelente servicio al cliente, la calidad de nuestros productos y nuestra capacidad para adaptarnos a las nuevas tendencias del desarrollo web, la electrónica y la gestión ágil de negocios. Buscamos ser el principal aliado tecnológico para el crecimiento digital de nuestros clientes.</p>
     </section>
 
-    <div id="modal-carrito" class="modal-carrito">
-            <div class="modal-contenido">
-                <span class="cerrar" onclick="cerrarCarrito()">&times;</span>
-                
-                <h2>Resumen de Compra</h2>
-                <p>Cuenta: <strong id="nombre-usuario-display">Cargando...</strong></p>
-                                    
-                <div id="lista-items"></div>
+<div id="panel-carrito" class="panel-carrito">
+    <div class="panel-contenido">
 
-                <div class="totales">
-                    <h3>Total: $<span id="precio-total">0</span></h3>
+        <!-- HEADER -->
+        <div class="panel-header">
+            <h2><span id="carrito-titulo">Tu carrito (<span id="cantidad-items">0</span>)</span></h2>
+            <button onclick="cerrarCarrito()" class="panel-cerrar">×</button>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="panel-usuario">
+            <div class="panel-avatar" id="panel-avatar">U</div>
+            <div>
+                <strong id="panel-nombre-usuario">Cargando...</strong>
+                <span id="panel-email-usuario"></span>
+            </div>
+        </div>
+
+        <!-- VISTA 1: CARRITO -->
+        <div id="vista-carrito">
+            <div class="panel-items" id="lista-items"></div>
+            <div class="panel-footer">
+                <div class="panel-total-row">
+                    <span>Total</span>
+                    <strong id="precio-total">$0</strong>
                 </div>
+                <div class="panel-metodos">
+                    <button class="metodo-btn activo" onclick="seleccionarMetodo(this, 'Visa')">VISA</button>
+                    <button class="metodo-btn" onclick="seleccionarMetodo(this, 'Mastercard')">Mastercard</button>
+                    <button class="metodo-btn" onclick="seleccionarMetodo(this, 'Transferencia')">Transferencia</button>
+                    <button class="metodo-btn" onclick="seleccionarMetodo(this, 'Efectivo')">Efectivo</button>
+                </div>
+                <button class="btn-confirmar-panel" onclick="irADireccion()">Confirmar pedido</button>
+            </div>
+        </div>
 
-                <div class="pago">
-                    <label>Método de pago:</label>
-                    <select id="metodo-pago">
-                        <option value="visa">Visa</option>
-                        <option value="credito">Tarjeta de Crédito</option>
-                        <option value="debito">Tarjeta de Débito</option>
-                        <option value="transferencia">Transferencia</option>
-                        <option value="efectivo">Efectivo</option>
+        <!-- VISTA 2: DIRECCIÓN -->
+        <div id="vista-direccion" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
+            <div class="panel-items" style="padding: 16px 20px;">
+                <p style="font-size:13px; color:var(--color-text-secondary, #666); margin-bottom:16px;">
+                    <strong style="color:#d93025;">Dirección de envío no registrada.</strong><br>
+                    Ingresa tu dirección para continuar.
+                </p>
+                <div class="dir-grupo">
+                    <label>Estado</label>
+                    <select id="dir-estado">
+                        <option value="">Selecciona tu estado</option>
+                        <option>Aguascalientes</option><option>Baja California</option>
+                        <option>Baja California Sur</option><option>Campeche</option>
+                        <option>Chiapas</option><option>Chihuahua</option>
+                        <option>Ciudad de México</option><option>Coahuila</option>
+                        <option>Colima</option><option>Durango</option>
+                        <option>Estado de México</option><option>Guanajuato</option>
+                        <option>Guerrero</option><option>Hidalgo</option>
+                        <option>Jalisco</option><option>Michoacán</option>
+                        <option>Morelos</option><option>Nayarit</option>
+                        <option>Nuevo León</option><option>Oaxaca</option>
+                        <option>Puebla</option><option>Querétaro</option>
+                        <option>Quintana Roo</option><option>San Luis Potosí</option>
+                        <option>Sinaloa</option><option>Sonora</option>
+                        <option>Tabasco</option><option>Tamaulipas</option>
+                        <option>Tlaxcala</option><option>Veracruz</option>
+                        <option>Yucatán</option><option>Zacatecas</option>
                     </select>
                 </div>
-
-                <button class="btn-finalizar" onclick="procesarPago()">Confirmar Pedido</button>
+                <div class="dir-grupo">
+                    <label>Ciudad / Municipio</label>
+                    <input type="text" id="dir-ciudad" placeholder="Ej. Sabinas Hidalgo">
+                </div>
+                <div class="dir-grupo">
+                    <label>Colonia</label>
+                    <input type="text" id="dir-colonia" placeholder="Ej. Centro">
+                </div>
+                <div class="dir-grupo">
+                    <label>Calle y número</label>
+                    <input type="text" id="dir-calle" placeholder="Ej. Av. Juárez 123">
+                </div>
+                <div class="dir-grupo">
+                    <label>Código Postal</label>
+                    <input type="text" id="dir-cp" placeholder="Ej. 65200" maxlength="5">
+                </div>
+                <p id="dir-mensaje" style="font-size:12px; min-height:16px; margin-top:4px;"></p>
             </div>
+            <div class="panel-footer">
+                <button class="btn-confirmar-panel" onclick="guardarDireccionYConfirmar()">Guardar y confirmar pedido</button>
+                <button class="btn-volver" onclick="volverAlCarrito()">← Volver al carrito</button>
+            </div>
+        </div>
+
     </div>
+</div>
+
+<!-- NOTIFICACIÓN FLOTANTE -->
+<div id="notif-agregado" class="notif-agregado" style="display:none;"></div>
 
     <script src="app.js"></script>
 
@@ -216,6 +283,8 @@
                     const docSnap = await getDoc(doc(db, "usuarios", user.uid));
                     if (docSnap.exists()) {
                         nombreDisplay.innerText = `Hola, ${docSnap.data().nombre}`;
+                        nombreUsuarioActual = docSnap.data().nombre;
+                        emailUsuarioActual = user.email;
                     } else {
                         nombreDisplay.innerText = `Hola, Usuario`;
                     }
@@ -244,29 +313,127 @@
         // LÓGICA DEL CARRITO
         // ====================================================================
         let carrito = [];
+        let metodoPago = 'Visa';
+        let nombreUsuarioActual = '';
+        let emailUsuarioActual = '';
+
+        window.seleccionarMetodo = function(btn, metodo) {
+            document.querySelectorAll('.metodo-btn').forEach(b => b.classList.remove('activo'));
+            btn.classList.add('activo');
+            metodoPago = metodo;
+        };
 
         window.agregarAlCarrito = function(nombre, precio) {
             carrito.push({ nombre, precio });
             document.getElementById('cantidad-carrito').innerText = carrito.length;
-            alert(`"${nombre}" se agregó al carrito.`);
+            mostrarNotificacion(`✔ "${nombre}" agregado al carrito`);
+        };
+
+        function mostrarNotificacion(texto) {
+            const notif = document.getElementById('notif-agregado');
+            notif.innerText = texto;
+            notif.style.display = 'block';
+            setTimeout(() => { notif.style.display = 'none'; }, 2500);
+        }
+
+        function renderizarCarrito() {
+            const lista = document.getElementById('lista-items');
+            let total = 0;
+            lista.innerHTML = '';
+            if (carrito.length === 0) {
+                lista.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px 0;">Tu carrito está vacío</p>';
+            } else {
+                carrito.forEach((item, i) => {
+                    lista.innerHTML += `
+                        <div class="panel-item">
+                            <span class="panel-item-nombre">${item.nombre}</span>
+                            <span class="panel-item-precio">$${item.precio}</span>
+                            <button class="panel-item-del" onclick="eliminarDelCarrito(${i})">🗑</button>
+                        </div>`;
+                    total += item.precio;
+                });
+            }
+            document.getElementById('precio-total').innerText = `$${total}`;
+            document.getElementById('cantidad-carrito').innerText = carrito.length;
+            document.getElementById('cantidad-items').innerText = carrito.length;
+        }
+
+        window.eliminarDelCarrito = function(index) {
+            carrito.splice(index, 1);
+            renderizarCarrito();
         };
 
         window.verCarrito = function() {
-            if(carrito.length === 0) {
-                alert("Tu carrito está vacío.");
-                return;
-            }
-            let total = 0;
-            let lista = "Tus productos:\n\n";
-            carrito.forEach((item, index) => {
-                lista += `${index + 1}. ${item.nombre} - $${item.precio}\n`;
-                total += item.precio;
-            });
-            lista += `\nTotal: $${total}`;
-            alert(lista); // Por ahora lo mostramos en un alert simple
+            document.getElementById('panel-nombre-usuario').innerText = nombreUsuarioActual || 'Usuario';
+            document.getElementById('panel-email-usuario').innerText = emailUsuarioActual || '';
+            const iniciales = (nombreUsuarioActual || 'U').split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('panel-avatar').innerText = iniciales;
+            volverAlCarrito();
+            renderizarCarrito();
+            document.getElementById('panel-carrito').classList.add('abierto');
         };
 
-        
+        window.cerrarCarrito = function() {
+            document.getElementById('panel-carrito').classList.remove('abierto');
+        };
+
+        window.irADireccion = function() {
+            if (carrito.length === 0) {
+                mostrarNotificacion('⚠ Tu carrito está vacío');
+                return;
+            }
+            document.getElementById('vista-carrito').style.display = 'none';
+            document.getElementById('vista-direccion').style.display = 'flex';
+        };
+
+        window.volverAlCarrito = function() {
+            document.getElementById('vista-carrito').style.display = 'flex';
+            document.getElementById('vista-direccion').style.display = 'none';
+            document.getElementById('dir-mensaje').innerText = '';
+        };
+
+        window.guardarDireccionYConfirmar = async function() {
+            const estado  = document.getElementById('dir-estado').value;
+            const ciudad  = document.getElementById('dir-ciudad').value.trim();
+            const colonia = document.getElementById('dir-colonia').value.trim();
+            const calle   = document.getElementById('dir-calle').value.trim();
+            const cp      = document.getElementById('dir-cp').value.trim();
+            const mensaje = document.getElementById('dir-mensaje');
+
+            if (!estado || !ciudad || !colonia || !calle || !cp) {
+                mensaje.style.color = '#d93025';
+                mensaje.innerText = 'Por favor llena todos los campos.';
+                return;
+            }
+            if (cp.length !== 5 || isNaN(cp)) {
+                mensaje.style.color = '#d93025';
+                mensaje.innerText = 'El código postal debe tener 5 dígitos.';
+                return;
+            }
+
+            mensaje.style.color = '#007185';
+            mensaje.innerText = 'Guardando...';
+
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    await setDoc(doc(db, "usuarios", user.uid), {
+                        direccion: { estado, ciudad, colonia, calle, cp }
+                    }, { merge: true });
+                }
+                carrito = [];
+                renderizarCarrito();
+                cerrarCarrito();
+                volverAlCarrito();
+                mostrarNotificacion(`✔ Pedido confirmado. Pago con ${metodoPago}`);
+            } catch (error) {
+                console.error(error);
+                mensaje.style.color = '#d93025';
+                mensaje.innerText = 'Error al guardar. Intenta de nuevo.';
+            }
+        };
+
+                
 
         // ====================================================================
         // LÓGICA DE DETALLES DEL PRODUCTO
