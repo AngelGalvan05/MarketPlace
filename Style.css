@@ -296,28 +296,74 @@ body {
     margin-top: auto;
 }
 
-/* ==================== 6. SECCIONES INFORMATIVAS ==================== */
-.info-section {
+/* ==================== 6. SECCIONES INFORMATIVAS (ACORDEÓN) ==================== */
+.info-acordeon {
     max-width: 1300px;
     margin: 40px auto;
-    padding: 30px;
+    padding: 0 20px;
+}
+
+/* Contenedor de cada pestaña */
+.info-acordeon details {
     background: #fff;
+    margin-bottom: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    border-top: 4px solid #2d3277;
+    overflow: hidden;
+    border-left: 4px solid #2d3277; /* Acento azul en el borde */
+    transition: all 0.3s ease;
 }
 
-.info-section h2 {
+/* El "Botón" en el que el usuario hace clic */
+.info-acordeon summary {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 600;
     color: #2d3277;
-    margin-bottom: 15px;
-    font-size: 24px;
+    cursor: pointer;
+    list-style: none; /* Quita la flecha por defecto en Firefox/Chrome */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
 }
 
-.info-section p {
+.info-acordeon summary:hover {
+    background-color: #f8f9fa;
+}
+
+/* Quita la flecha por defecto en WebKit */
+.info-acordeon summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Flecha personalizada usando CSS */
+.info-acordeon summary::after {
+    content: "▼";
+    font-size: 14px;
+    color: #2d3277;
+    transition: transform 0.3s ease;
+}
+
+/* Gira la flecha cuando la pestaña está abierta */
+.info-acordeon details[open] summary::after {
+    transform: rotate(180deg);
+}
+
+/* El texto que se despliega */
+.details-content {
+    padding: 0 20px 20px 20px;
     color: #444;
     line-height: 1.6;
-    font-size: 16px;
+    font-size: 15px;
     text-align: justify;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Animación suave al abrir */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ==================== 7. MODALES Y FORMULARIOS ==================== */
