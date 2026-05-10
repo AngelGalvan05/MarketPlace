@@ -18,8 +18,8 @@
 
         <div class="user-menu">
             <div class="auth-buttons" id="ui-invitado">
-                <button class="btn-auth" onclick="mostrarLogin()">Iniciar sesión</button>
-                <button class="btn-auth" onclick="mostrarRegistro()">Registrarse</button>
+            <button class="btn-login" onclick="mostrarLogin()">Iniciar sesión</button>
+            <button class="btn-registro" onclick="mostrarRegistro()">Registrarse</button>
             </div>
             
             <div class="auth-buttons" id="ui-usuario" style="display: none; align-items: center; gap: 15px;">
@@ -484,12 +484,15 @@
                 cerrarMenuUsuario();
             }
         });
+
         window.cerrarSesion = async function() {
+            cerrarMenuUsuario();
             try {
                 await signOut(auth);
-                alert("Has cerrado sesión exitosamente.");
+                mostrarNotificacion('👋 Has cerrado sesión. ¡Hasta pronto!');
             } catch (error) {
                 console.error("Error al cerrar sesión:", error);
+                mostrarNotificacion('❌ Error al cerrar sesión.');
             }
         };
 
@@ -1121,7 +1124,7 @@
 
                 setTimeout(() => {
                     window.cerrarForm();
-                    alert("Bienvenido a TechMarket");
+                    mostrarNotificacion(`👋 ¡Bienvenido a TechMarket!`);
                     mensaje.innerText = "";
                     document.getElementById("emailLogin").value = "";
                     document.getElementById("passwordLogin").value = "";
