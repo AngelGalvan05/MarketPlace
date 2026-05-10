@@ -23,8 +23,20 @@
             </div>
             
             <div class="auth-buttons" id="ui-usuario" style="display: none; align-items: center; gap: 15px;">
-                <span id="nombre-usuario-display" style="font-weight: bold; color: #2d3277;"></span>
-                <button class="btn-auth" onclick="cerrarSesion()">Cerrar sesión</button>
+                <div class="usuario-menu-wrapper">
+                    <div class="usuario-btn" onclick="toggleMenuUsuario()">
+                        <div class="usuario-avatar-small" id="usuario-avatar-small">U</div>
+                        <span id="nombre-usuario-display" style="font-weight: bold; color: #2d3277;"></span>
+                        <span class="usuario-chevron">▾</span>
+                    </div>
+                    <div class="usuario-dropdown" id="usuario-dropdown">
+                        <a onclick="cerrarMenuUsuario()">👤 Mi cuenta</a>
+                        <a onclick="cerrarMenuUsuario()">📦 Mis compras</a>
+                        <a onclick="cerrarMenuUsuario()">📍 Dirección de envío</a>
+                        <hr>
+                        <a onclick="cerrarSesion()" class="dropdown-cerrar">🚪 Cerrar sesión</a>
+                    </div>
+                </div>
             </div>
 
             <div class="cart" style="cursor: pointer;" onclick="verCarrito()">
@@ -285,6 +297,8 @@
                         nombreDisplay.innerText = `Hola, ${docSnap.data().nombre}`;
                         nombreUsuarioActual = docSnap.data().nombre;
                         emailUsuarioActual = user.email;
+                        const inicialesMenu = nombreUsuarioActual.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
+                        document.getElementById('usuario-avatar-small').innerText = inicialesMenu;
                     } else {
                         nombreDisplay.innerText = `Hola, Usuario`;
                     }
@@ -300,6 +314,25 @@
         });
 
         // Función para cerrar sesión
+        window.toggleMenuUsuario = function() {
+            const dropdown = document.getElementById('usuario-dropdown');
+            const chevron = document.querySelector('.usuario-chevron');
+            dropdown.classList.toggle('abierto');
+            chevron.classList.toggle('abierto');
+        };
+
+        window.cerrarMenuUsuario = function() {
+            document.getElementById('usuario-dropdown').classList.remove('abierto');
+            document.querySelector('.usuario-chevron').classList.remove('abierto');
+        };
+
+        // Cerrar menú si se hace clic afuera
+        document.addEventListener('click', function(e) {
+            const wrapper = document.querySelector('.usuario-menu-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                cerrarMenuUsuario();
+            }
+        });
         window.cerrarSesion = async function() {
             try {
                 await signOut(auth);
