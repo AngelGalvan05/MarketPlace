@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
+    <title>Acerca de Nosotros - TechMarket</title>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">TechMarket</div>
+
+        <div class="search-bar" style="visibility: hidden;">
+            <input type="text">
+        </div>
+
+        <div class="user-menu">
+            <div class="auth-buttons" id="ui-invitado">
+                <a href="index.html" class="btn-login" style="text-decoration: none;">Iniciar sesión</a>
+            </div>
+            
+            <div class="auth-buttons" id="ui-usuario" style="display: none; align-items: center; gap: 15px;">
+                <div class="usuario-menu-wrapper">
+                    <div class="usuario-btn" onclick="toggleMenuUsuario()">
+                        <div class="usuario-avatar-small" id="usuario-avatar-small">U</div>
+                        <span id="nombre-usuario-display" style="font-weight: bold; color: #2d3277;"></span>
+                        <span class="usuario-chevron">▾</span>
+                    </div>
+                    <div class="usuario-dropdown" id="usuario-dropdown">
+                        <a href="index.html">🏠 Volver a la tienda</a>
+                        <hr>
+                        <a onclick="cerrarSesion()" class="dropdown-cerrar">🚪 Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="top-nav">
+        <a href="index.html">Catálogo de Productos</a>
+        <a href="nosotros.html" style="text-decoration: underline; color: #f0c14b;">Acerca de nosotros</a>
+    </nav>
+
+    <div class="main-container">
+        <section class="info-section">
+            <h2>Acerca de Nosotros</h2>
+            <p><strong>TechMarket</strong> es una iniciativa digital nacida en Sabinas Hidalgo, Nuevo León, impulsada por futuros profesionales en Tecnologías de Información. Comprendemos que el acceso a hardware de calidad, componentes electrónicos precisos y servicios digitales especializados es fundamental para el desarrollo académico y comercial. Por ello, centralizamos las mejores soluciones tecnológicas en una plataforma intuitiva, segura y diseñada pensando en las necesidades reales de estudiantes, desarrolladores y emprendedores de nuestra región.</p>
+        </section>
+
+        <section class="info-section" style="border-top: 4px solid #f0c14b;">
+            <h2 style="color: #f0c14b;">Nuestra Visión</h2>
+            <p>Nuestra visión es consolidarnos como el <em>marketplace</em> líder en la distribución de recursos tecnológicos a nivel local y regional. Buscamos democratizar el acceso a la innovación, ofreciendo no solo productos físicos, sino también servicios y licencias de vanguardia. Aspiramos a ser el puente que conecte las herramientas del mañana con los talentos de hoy, impulsando el crecimiento digital y facilitando la transición hacia entornos tecnológicos más eficientes y competitivos.</p>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCvxilsuHcDCynIDoaAbNBCvoY47OCuv0g",
+            authDomain: "paginawebuanlevidencia.firebaseapp.com",
+            projectId: "paginawebuanlevidencia",
+            storageBucket: "paginawebuanlevidencia.firebasestorage.app",
+            messagingSenderId: "333532326502",
+            appId: "1:333532326502:web:6e98985eaf107d4cc01ba7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            const uiInvitado = document.getElementById('ui-invitado');
+            const uiUsuario = document.getElementById('ui-usuario');
+            const nombreDisplay = document.getElementById('nombre-usuario-display');
+
+            if (user) {
+                uiInvitado.style.display = 'none';
+                uiUsuario.style.display = 'flex';
+                try {
+                    const docSnap = await getDoc(doc(db, "usuarios", user.uid));
+                    if (docSnap.exists()) {
+                        const nombre = docSnap.data().nombre;
+                        nombreDisplay.innerText = `Hola, ${nombre}`;
+                        document.getElementById('usuario-avatar-small').innerText = nombre.substring(0, 2).toUpperCase();
+                    }
+                } catch (error) { console.error(error); }
+            } else {
+                uiInvitado.style.display = 'flex';
+                uiUsuario.style.display = 'none';
+            }
+        });
+
+        window.cerrarSesion = async function() {
+            try {
+                await signOut(auth);
+                window.location.href = "index.html"; // Lo regresa a la tienda al cerrar sesión
+            } catch (error) { console.error(error); }
+        };
+    </script>
+</body>
+</html>
