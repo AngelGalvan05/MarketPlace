@@ -37,18 +37,38 @@ window.irALogin = function() {
 // ====================================================================
 (function() {
     const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
     let actual = 0;
 
+    // Duplicamos el primer slide al final para el efecto infinito
+    const primerClone = slides[0].cloneNode(true);
+    document.querySelector('.slider-container').appendChild(primerClone);
+
+    const todasLasSlides = document.querySelectorAll('.slide');
+
     function moverCarrusel() {
-        slides.forEach(s => s.style.transform = `translateX(-${actual * 100}%)`);
+        todasLasSlides.forEach(s => {
+            s.style.transform = `translateX(-${actual * 100}%)`;
+        });
     }
 
     function siguiente() {
-        actual = (actual + 1) % slides.length;
+        actual++;
         moverCarrusel();
+
+        // Cuando llega al clon del primero, brincamos sin animación al real
+        if (actual === total) {
+            setTimeout(() => {
+                todasLasSlides.forEach(s => s.style.transition = 'none');
+                actual = 0;
+                moverCarrusel();
+                setTimeout(() => {
+                    todasLasSlides.forEach(s => s.style.transition = 'transform 0.8s ease-in-out');
+                }, 50);
+            }, 800);
+        }
     }
 
-    // Cambia de slide cada 3 segundos
     setInterval(siguiente, 3000);
 })();
 
