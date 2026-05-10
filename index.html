@@ -31,7 +31,7 @@
                     </div>
                     <div class="usuario-dropdown" id="usuario-dropdown">
                         <a onclick="abrirModalCuenta()">👤 Mi cuenta</a>
-                        <a onclick="cerrarMenuUsuario()">📦 Mis compras</a>
+                        <a onclick="abrirModalCompras()">📦 Mis compras</a>
                         <a onclick="abrirModalDireccion()">📍 Dirección de envío</a>
                         <hr>
                         <a onclick="cerrarSesion()" class="dropdown-cerrar">🚪 Cerrar sesión</a>
@@ -393,11 +393,26 @@
     </div>
 </div>
 
+<!-- MODAL MIS COMPRAS -->
+<div id="modal-compras" class="modal-grande" style="display:none;">
+    <div class="modal-grande-box">
+        <div class="modal-grande-header">
+            <h2>📦 Mis compras</h2>
+            <button onclick="cerrarModalCompras()" class="panel-cerrar">×</button>
+        </div>
+        <div class="modal-grande-body">
+            <div id="lista-compras">
+                <p style="text-align:center; color:#aaa; padding:30px 0;">Cargando...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script src="app.js"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, doc, setDoc, getDoc, serverTimestamp, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         // Datos de la Base de Datos
         const firebaseConfig = {
@@ -546,17 +561,40 @@
             document.getElementById('panel-carrito').classList.remove('abierto');
         };
 
-        window.irADireccion = function() {
+        async function guardarPedido() {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const dir = direcciones[direccionSeleccionadaIndex] || null;
+        const total = carrito.reduce((sum, item) => sum + item.precio, 0);
+
+        try {
+            await addDoc(collection(db, "pedidos"), {
+                uid: user.uid,
+                productos: carrito,
+                total: total,
+                metodoPago: metodoPago,
+                direccion: dir,
+                fecha: serverTimestamp()
+            });
+            carrito = [];
+            renderizarCarrito();
+            cerrarCarrito();
+            mostrarNotificacion(`✔ Pedido confirmado. Pago con ${metodoPago}`);
+        } catch (e) {
+            console.error(e);
+            mostrarNotificacion('❌ Error al confirmar pedido.');
+        }
+    }
+
+        window.irADireccion = async function() {
         if (carrito.length === 0) {
             mostrarNotificacion('⚠ Tu carrito está vacío');
             return;
         }
         if (direcciones.length > 0) {
             // Ya tiene dirección, confirmar directo
-            carrito = [];
-            renderizarCarrito();
-            cerrarCarrito();
-            mostrarNotificacion(`✔ Pedido confirmado. Pago con ${metodoPago}`);
+            await guardarPedido();
             return;
         }
         document.getElementById('vista-carrito').style.display = 'none';
@@ -574,6 +612,80 @@
         // ====================================================================
         let direcciones = [];
         let direccionSeleccionadaIndex = 0;
+
+        // ====================================================================
+        // MODAL MIS COMPRAS
+        // ====================================================================
+        window.abrirModalCompras = async function() {
+            cerrarMenuUsuario();
+            document.getElementById('modal-compras').style.display = 'flex';
+            document.getElementById('lista-compras').innerHTML = '<p style="text-align:center;color:#aaa;padding:30px 0;">Cargando...</p>';
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                const q = query(
+                    collection(db, "pedidos"),
+                    where("uid", "==", user.uid),
+                    orderBy("fecha", "desc")
+                );
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    document.getElementById('lista-compras').innerHTML =
+                        '<p style="text-align:center;color:#aaa;padding:40px 0;">No tienes compras aún.</p>';
+                    return;
+                }
+
+                let html = '';
+                snap.forEach(docSnap => {
+                    const p = docSnap.data();
+                    const fecha = p.fecha?.toDate?.();
+                    const fechaStr = fecha
+                        ? fecha.toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' })
+                        : 'Fecha no disponible';
+
+                    const itemsHtml = p.productos.map(item =>
+                        `<div class="compra-item">
+                            <span>${item.nombre}</span>
+                            <span>$${item.precio}</span>
+                        </div>`
+                    ).join('');
+
+                    const dir = p.direccion;
+                    const dirStr = dir
+                        ? `${dir.calle}, ${dir.colonia}, ${dir.ciudad}, ${dir.estado} CP ${dir.cp}`
+                        : 'Sin dirección registrada';
+
+                    html += `
+                        <div class="compra-card">
+                            <div class="compra-header">
+                                <div>
+                                    <p class="compra-fecha">📅 ${fechaStr}</p>
+                                </div>
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    <span class="compra-metodo">${p.metodoPago}</span>
+                                    <span class="compra-total">$${p.total}</span>
+                                </div>
+                            </div>
+                            <div class="compra-items">${itemsHtml}</div>
+                            <div class="compra-direccion">📍 ${dirStr}</div>
+                        </div>`;
+                });
+
+                document.getElementById('lista-compras').innerHTML = html;
+
+            } catch (e) {
+                console.error(e);
+                document.getElementById('lista-compras').innerHTML =
+                    '<p style="text-align:center;color:#d93025;padding:30px 0;">Error al cargar compras.</p>';
+            }
+        };
+
+        window.cerrarModalCompras = function() {
+            document.getElementById('modal-compras').style.display = 'none';
+        };
 
         // ====================================================================
         // MODAL MI CUENTA
@@ -773,12 +885,8 @@
             
             // Si ya tiene dirección guardada, confirmar directo
             if (direcciones.length > 0) {
-                carrito = [];
-                renderizarCarrito();
-                cerrarCarrito();
+                await guardarPedido();
                 volverAlCarrito();
-                mostrarNotificacion(`✔ Pedido confirmado. Pago con ${metodoPago}`);
-                return;
             }
 
             const estado  = document.getElementById('dir-estado').value;
