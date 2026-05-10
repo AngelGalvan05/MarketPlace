@@ -30,7 +30,7 @@ window.irALogin = function() {
     document.getElementById("registerForm").style.display = "none";
     document.getElementById("loginForm").style.display = "block";
     document.getElementById("mensaje").innerText = "";
-}
+};
 
 // ====================================================================
 // CARRUSEL
