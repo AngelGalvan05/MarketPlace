@@ -861,3 +861,59 @@ body {
     font-size: 12px;
     color: #666;
 }
+/* ==================== ESTILOS PÁGINA NOSOTROS ==================== */
+
+/* Contenedor que alinea los cuadros */
+.contenedor-nosotros {
+    display: flex;
+    gap: 30px; /* Espacio entre cuadros */
+    margin-top: 40px;
+    flex-wrap: wrap; /* Para que en celulares se pongan uno abajo del otro */
+}
+
+/* Estilo de cada cuadro grande */
+.cuadro-info {
+    flex: 1; /* Hace que ambos midan lo mismo */
+    min-width: 300px; /* Tamaño mínimo antes de saltar de línea */
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-top: 6px solid #2d3277; /* Borde superior decorativo */
+    transition: transform 0.3s ease;
+}
+
+.cuadro-info:hover {
+    transform: translateY(-5px); /* Pequeño salto al pasar el mouse */
+}
+
+/* Variación de color para el cuadro de Visión */
+.cuadro-info.vision {
+    border-top-color: #f0c14b;
+}
+
+.cuadro-info h2 {
+    color: #2d3277;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.cuadro-info.vision h2 {
+    color: #f0c14b;
+}
+
+/* Línea decorativa debajo del título */
+.linea-decorativa {
+    width: 60px;
+    height: 4px;
+    background: #eee;
+    margin-bottom: 25px;
+    border-radius: 2px;
+}
+
+.cuadro-info p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #444;
+    text-align: justify;
+}

@@ -10,16 +10,13 @@
 
     <header class="header">
         <div class="logo">TechMarket</div>
-
         <div class="search-bar" style="visibility: hidden;">
             <input type="text">
         </div>
-
         <div class="user-menu">
             <div class="auth-buttons" id="ui-invitado">
                 <a href="index.html" class="btn-login" style="text-decoration: none;">Iniciar sesión</a>
             </div>
-            
             <div class="auth-buttons" id="ui-usuario" style="display: none; align-items: center; gap: 15px;">
                 <div class="usuario-menu-wrapper">
                     <div class="usuario-btn" onclick="toggleMenuUsuario()">
@@ -27,7 +24,7 @@
                         <span id="nombre-usuario-display" style="font-weight: bold; color: #2d3277;"></span>
                         <span class="usuario-chevron">▾</span>
                     </div>
-                    <div class="usuario-dropdown" id="usuario-dropdown">
+                    <div id="usuario-dropdown" class="usuario-dropdown">
                         <a href="index.html">🏠 Volver a la tienda</a>
                         <hr>
                         <a onclick="cerrarSesion()" class="dropdown-cerrar">🚪 Cerrar sesión</a>
@@ -43,15 +40,21 @@
     </nav>
 
     <div class="main-container">
-        <section class="info-section">
-            <h2>Acerca de Nosotros</h2>
-            <p><strong>TechMarket</strong> es una iniciativa digital nacida en Sabinas Hidalgo, Nuevo León, impulsada por futuros profesionales en Tecnologías de Información. Comprendemos que el acceso a hardware de calidad, componentes electrónicos precisos y servicios digitales especializados es fundamental para el desarrollo académico y comercial. Por ello, centralizamos las mejores soluciones tecnológicas en una plataforma intuitiva, segura y diseñada pensando en las necesidades reales de estudiantes, desarrolladores y emprendedores de nuestra región.</p>
-        </section>
+        <div class="contenedor-nosotros">
+            
+            <section class="cuadro-info">
+                <h2>Acerca de Nosotros</h2>
+                <div class="linea-decorativa"></div>
+                <p><strong>TechMarket</strong> es una iniciativa digital nacida en Sabinas Hidalgo, impulsada por futuros profesionales en Tecnologías de Información. Centralizamos las mejores soluciones tecnológicas en una plataforma intuitiva y segura, diseñada para estudiantes, desarrolladores y emprendedores de nuestra región.</p>
+            </section>
 
-        <section class="info-section" style="border-top: 4px solid #f0c14b;">
-            <h2 style="color: #f0c14b;">Nuestra Visión</h2>
-            <p>Nuestra visión es consolidarnos como el <em>marketplace</em> líder en la distribución de recursos tecnológicos a nivel local y regional. Buscamos democratizar el acceso a la innovación, ofreciendo no solo productos físicos, sino también servicios y licencias de vanguardia. Aspiramos a ser el puente que conecte las herramientas del mañana con los talentos de hoy, impulsando el crecimiento digital y facilitando la transición hacia entornos tecnológicos más eficientes y competitivos.</p>
-        </section>
+            <section class="cuadro-info vision">
+                <h2>Nuestra Visión</h2>
+                <div class="linea-decorativa"></div>
+                <p>Buscamos consolidarnos como el marketplace líder en la región, democratizando el acceso a la innovación. Queremos ser el puente que conecte las herramientas del mañana con los talentos de hoy, impulsando el crecimiento digital y facilitando la transición tecnológica.</p>
+            </section>
+
+        </div>
     </div>
 
     <script src="app.js"></script>
@@ -98,7 +101,7 @@
         window.cerrarSesion = async function() {
             try {
                 await signOut(auth);
-                window.location.href = "index.html"; // Lo regresa a la tienda al cerrar sesión
+                window.location.href = "index.html";
             } catch (error) { console.error(error); }
         };
     </script>
