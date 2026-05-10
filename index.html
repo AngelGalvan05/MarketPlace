@@ -150,6 +150,34 @@
         <p>Convertirnos en el marketplace tecnológico líder en la región, reconocido por nuestro excelente servicio al cliente, la calidad de nuestros productos y nuestra capacidad para adaptarnos a las nuevas tendencias del desarrollo web, la electrónica y la gestión ágil de negocios. Buscamos ser el principal aliado tecnológico para el crecimiento digital de nuestros clientes.</p>
     </section>
 
+    <div id="modal-carrito" class="modal-carrito">
+            <div class="modal-contenido">
+                <span class="cerrar" onclick="cerrarCarrito()">&times;</span>
+                
+                <h2>Resumen de Compra</h2>
+                <p>Cuenta: <strong id="nombre-usuario-display">Cargando...</strong></p>
+                                    
+                <div id="lista-items"></div>
+
+                <div class="totales">
+                    <h3>Total: $<span id="precio-total">0</span></h3>
+                </div>
+
+                <div class="pago">
+                    <label>Método de pago:</label>
+                    <select id="metodo-pago">
+                        <option value="visa">Visa</option>
+                        <option value="credito">Tarjeta de Crédito</option>
+                        <option value="debito">Tarjeta de Débito</option>
+                        <option value="transferencia">Transferencia</option>
+                        <option value="efectivo">Efectivo</option>
+                    </select>
+                </div>
+
+                <button class="btn-finalizar" onclick="procesarPago()">Confirmar Pedido</button>
+            </div>
+    </div>
+
     <script src="app.js"></script>
 
     <script type="module">
@@ -238,33 +266,7 @@
             alert(lista); // Por ahora lo mostramos en un alert simple
         };
 
-        <div id="modal-carrito" class="modal-carrito">
-            <div class="modal-contenido">
-                <span class="cerrar" onclick="cerrarCarrito()">&times;</span>
-                
-                <h2>Resumen de Compra</h2>
-                <p>Cuenta: <strong id="nombre-usuario-display">Cargando...</strong></p>
-                                    
-                <div id="lista-items"></div>
-
-                <div class="totales">
-                    <h3>Total: $<span id="precio-total">0</span></h3>
-                </div>
-
-                <div class="pago">
-                    <label>Método de pago:</label>
-                    <select id="metodo-pago">
-                        <option value="visa">Visa</option>
-                        <option value="credito">Tarjeta de Crédito</option>
-                        <option value="debito">Tarjeta de Débito</option>
-                        <option value="transferencia">Transferencia</option>
-                        <option value="efectivo">Efectivo</option>
-                    </select>
-                </div>
-
-                <button class="btn-finalizar" onclick="procesarPago()">Confirmar Pedido</button>
-            </div>
-        </div>
+        
 
         // ====================================================================
         // LÓGICA DE DETALLES DEL PRODUCTO
