@@ -31,3 +31,24 @@ window.irALogin = function() {
     document.getElementById("loginForm").style.display = "block";
     document.getElementById("mensaje").innerText = "";
 }
+
+// ====================================================================
+// CARRUSEL
+// ====================================================================
+(function() {
+    const slides = document.querySelectorAll('.slide');
+    let actual = 0;
+
+    function moverCarrusel() {
+        slides.forEach(s => s.style.transform = `translateX(-${actual * 100}%)`);
+    }
+
+    function siguiente() {
+        actual = (actual + 1) % slides.length;
+        moverCarrusel();
+    }
+
+    // Cambia de slide cada 3 segundos
+    setInterval(siguiente, 3000);
+})();
+
